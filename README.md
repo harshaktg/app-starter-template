@@ -146,22 +146,66 @@ pnpm dlx shadcn@latest add [component-name]
 
 To customize the theme, modify the `tailwind.config.ts` and `app/globals.css` files.
 
-## 🧪 Testing (Optional)
+## 🌿 Feature Branches
 
-This template has a separate branch with full testing support:
+This template has specialized branches with additional features. Choose the one that fits your needs:
 
-**Branch: `with-testing`**
+### `with-ai` - AI-Powered Features 🤖
 
-Includes:
+Add AI capabilities with Vercel AI SDK and OpenAI integration.
 
-- **Playwright** for E2E testing
-- **Vitest** for unit testing
-- **React Testing Library** for component testing
-- Pre-configured test setup
-- Example tests for auth flows
-- GitHub Actions workflow for CI/CD
+**Includes:**
+- ✅ Streaming AI chat interface
+- ✅ OpenAI GPT-4o-mini integration
+- ✅ Reusable AI components
+- ✅ Type-safe AI responses
+- ✅ AI SDK cursor rule
 
-To use the testing setup:
+```bash
+git checkout with-ai
+pnpm install
+# Add OPENAI_API_KEY to .env.local
+pnpm dev
+# Visit /ai-demo
+```
+
+**Use cases:** Chatbots, AI assistants, content generation, data analysis
+
+---
+
+### `with-canvas` - Interactive Diagrams 🎨
+
+Build node-based editors and interactive diagrams with React Flow.
+
+**Includes:**
+- ✅ Interactive flow canvas
+- ✅ Drag-and-drop nodes
+- ✅ Visual connections
+- ✅ MiniMap & controls
+- ✅ React Flow cursor rule
+
+```bash
+git checkout with-canvas
+pnpm install
+pnpm dev
+# Visit /canvas-demo
+```
+
+**Use cases:** Workflow builders, flowcharts, data visualizations, process diagrams
+
+---
+
+### `with-testing` - Full Testing Support 🧪
+
+Comprehensive testing setup for production applications.
+
+**Includes:**
+- ✅ **Playwright** for E2E testing
+- ✅ **Vitest** for unit testing
+- ✅ **React Testing Library** for component testing
+- ✅ Pre-configured test setup
+- ✅ Example tests for auth flows
+- ✅ GitHub Actions CI/CD workflow
 
 ```bash
 git checkout with-testing
@@ -170,7 +214,11 @@ pnpm test           # Run unit tests
 pnpm test:e2e       # Run E2E tests
 ```
 
-> **Note:** The main branch is kept lightweight for quick prototyping. Switch to `with-testing` when you're ready to add comprehensive test coverage.
+**Use cases:** Production apps, enterprise projects, team collaboration
+
+---
+
+> **💡 Tip:** The main branch is kept lightweight for quick prototyping. Switch to feature branches to add specific capabilities as your project grows.
 
 ## 📐 Cursor Rules
 

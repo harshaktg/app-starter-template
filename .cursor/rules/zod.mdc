@@ -1,0 +1,78 @@
+---
+description: Zod validation patterns for forms, APIs, and data validation
+globs: **/*.ts, **/*.tsx, lib/**/*.ts, app/**/*.ts
+---
+
+# Zod Validation Best Practices
+
+## Schema Definition
+
+- Define schemas close to where they're used or in dedicated schema files
+- Use descriptive schema names (e.g., `loginSchema`, `userProfileSchema`)
+- Export schemas for reuse across client and server
+- Use `.strict()` to prevent unexpected fields
+- Implement proper error messages with `.refine()` and custom error maps
+- Use branded types for additional type safety
+
+## Form Validation
+
+- Validate on client-side before submission
+- Always validate again on server-side
+- Use `.safeParse()` for validation without throwing
+- Parse form data with `z.object()` schemas
+- Handle validation errors in UI appropriately
+- Show field-specific error messages
+
+## API Validation
+
+- Validate all incoming request data
+- Use Zod schemas for request body, params, and query validation
+- Return proper error responses for validation failures
+- Type API responses with Zod schemas
+- Use `.transform()` for data normalization
+- Implement proper error handling
+
+## Complex Schemas
+
+- Use `.refine()` for custom validation logic
+- Implement cross-field validation with `.superRefine()`
+- Use discriminated unions for polymorphic data
+- Leverage `.extend()` to build upon existing schemas
+- Use `.pick()` and `.omit()` for schema variations
+- Implement conditional validation with `.refine()`
+
+## TypeScript Integration
+
+- Infer TypeScript types from Zod schemas with `z.infer<>`
+- Use Zod schemas as single source of truth for types
+- Export both schema and inferred type together
+- Use Zod for runtime validation and compile-time types
+- Avoid duplicating types and schemas
+- Use `.brand()` for nominal typing
+
+## Performance
+
+- Cache parsed schemas when possible
+- Use `.partial()` for optional updates
+- Implement lazy validation for large forms
+- Use `.passthrough()` sparingly
+- Avoid overly complex nested schemas
+- Parse only what you need
+
+## Error Handling
+
+- Use custom error maps for user-friendly messages
+- Format Zod errors for display in UI
+- Log validation failures appropriately
+- Return proper HTTP status codes for API validation
+- Provide specific field-level errors
+- Handle edge cases gracefully
+
+## Common Patterns
+
+- Email validation: `z.string().email()`
+- Password strength: Custom refinement with clear rules
+- Date validation: `z.coerce.date()` or `z.string().datetime()`
+- Optional fields: `.optional()` or `.nullable()`
+- Default values: `.default()`
+- Enums: `z.enum()` or `z.nativeEnum()`

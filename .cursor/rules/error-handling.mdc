@@ -1,0 +1,228 @@
+---
+description: Error handling patterns and user feedback strategies
+globs: **/*.ts, **/*.tsx, app/**/*
+---
+
+# Error Handling Best Practices
+
+## Error Boundaries
+
+- Implement error boundaries for component trees
+- Use error.tsx files in Next.js App Router
+- Create reusable error boundary components
+- Show user-friendly error messages
+- Provide error recovery actions
+- Log errors for monitoring
+- Reset error state when appropriate
+- Handle different error types differently
+
+## Try-Catch Blocks
+
+- Use try-catch for async operations
+- Wrap Server Actions in try-catch
+- Handle specific error types
+- Provide meaningful error messages
+- Log errors appropriately
+- Don't swallow errors silently
+- Clean up resources in finally blocks
+- Return consistent error formats
+
+## Server Action Errors
+
+- Always wrap Server Actions in try-catch
+- Validate input before processing
+- Return consistent error responses
+- Handle Supabase errors specifically
+- Don't expose internal error details
+- Log errors for debugging
+- Return user-friendly messages
+- Include error codes when helpful
+
+## API Route Errors
+
+- Return proper HTTP status codes
+- Use NextResponse for error responses
+- Provide clear error messages
+- Don't expose stack traces
+- Log errors server-side
+- Handle validation errors separately
+- Return consistent error structure
+- Include request IDs for tracking
+
+## Supabase Errors
+
+- Handle Supabase error codes specifically
+- Check for auth errors (401, 403)
+- Handle network errors gracefully
+- Parse Supabase error messages
+- Provide user-friendly alternatives
+- Log Supabase errors appropriately
+- Implement retry logic for transient failures
+- Handle rate limiting errors
+
+## Form Validation Errors
+
+- Show field-level error messages
+- Display errors near relevant fields
+- Use clear, actionable messages
+- Show all errors or one at a time (consistent)
+- Clear errors appropriately
+- Prevent submission with errors
+- Use ARIA attributes for accessibility
+- Style errors clearly
+
+## Network Errors
+
+- Handle offline scenarios
+- Implement retry logic
+- Show connection status
+- Provide offline functionality when possible
+- Cache data for offline access
+- Detect connectivity changes
+- Show appropriate loading states
+- Implement timeout handling
+
+## Loading States
+
+- Show loading indicators for async operations
+- Implement skeleton screens
+- Use Suspense boundaries
+- Show progress for long operations
+- Disable actions during loading
+- Provide loading feedback immediately
+- Handle loading state cleanup
+- Consider optimistic updates
+
+## User Feedback
+
+- Show success messages after operations
+- Use toast notifications appropriately
+- Keep messages concise and clear
+- Provide actionable next steps
+- Use appropriate notification levels (error, warning, info, success)
+- Implement dismissible notifications
+- Consider notification position and timing
+- Test with screen readers
+
+## Error Logging
+
+- Log errors to monitoring service (Sentry, LogRocket)
+- Include relevant context (user ID, action, timestamp)
+- Don't log sensitive information
+- Use structured logging
+- Implement error severity levels
+- Include stack traces in logs
+- Log user actions before errors
+- Set up alerts for critical errors
+
+## Validation Errors
+
+- Validate on client and server
+- Use Zod for schema validation
+- Show clear validation messages
+- Validate early (on blur or submit)
+- Provide format examples
+- Highlight invalid fields
+- Allow easy error correction
+- Test validation edge cases
+
+## Authentication Errors
+
+- Handle expired sessions gracefully
+- Redirect to login when appropriate
+- Show clear auth error messages
+- Implement proper logout on auth errors
+- Handle token refresh failures
+- Provide re-authentication flow
+- Don't expose auth internals
+- Log authentication failures
+
+## Database Errors
+
+- Handle unique constraint violations
+- Handle foreign key violations
+- Handle connection errors
+- Provide user-friendly messages
+- Don't expose database details
+- Log database errors
+- Implement retry for transient errors
+- Handle timeouts appropriately
+
+## Error Recovery
+
+- Provide retry buttons
+- Implement automatic retry for transient errors
+- Clear error state on retry
+- Redirect to safe state when needed
+- Save user input before retry
+- Provide alternative actions
+- Handle partial failures
+- Test recovery flows
+
+## Error Messages
+
+- Use clear, non-technical language
+- Explain what happened
+- Suggest how to fix it
+- Avoid blame ("You entered...", use "Please enter...")
+- Be specific about the problem
+- Provide relevant context
+- Keep messages concise
+- Test messages with users
+
+## Development vs Production
+
+- Show detailed errors in development
+- Show generic errors in production
+- Use different error components per environment
+- Log differently per environment
+- Test production error handling
+- Monitor production errors
+- Don't expose sensitive info in production
+- Have fallback error handling
+
+## 404 and Not Found
+
+- Create custom 404 pages (not-found.tsx)
+- Provide helpful navigation
+- Suggest related content
+- Include search functionality
+- Log 404 errors
+- Redirect common typos
+- Maintain branding in error pages
+- Test 404 scenarios
+
+## Rate Limiting Errors
+
+- Handle rate limit responses (429)
+- Show retry-after information
+- Implement exponential backoff
+- Cache responses when possible
+- Show user-friendly rate limit messages
+- Log rate limit hits
+- Implement client-side throttling
+- Consider alternative actions
+
+## Error Testing
+
+- Test error scenarios
+- Test error boundaries
+- Test network failures
+- Test validation errors
+- Test edge cases
+- Test error recovery
+- Use error state in Storybook
+- Conduct user testing with errors
+
+## Best Practices
+
+- Handle errors at appropriate levels
+- Provide context with errors
+- Log errors consistently
+- Show user-friendly messages
+- Implement error monitoring
+- Test error scenarios thoroughly
+- Document error handling patterns
+- Review error logs regularly
+- Continuously improve error handling
+- Consider error analytics

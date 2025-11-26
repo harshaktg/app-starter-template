@@ -1,0 +1,128 @@
+---
+description: Next.js Server Actions and API Routes best practices
+globs: app/**/actions.ts, app/**/route.ts, app/api/**/*
+---
+
+# Server Actions & API Routes Best Practices
+
+## Server Actions
+
+- Define Server Actions in separate `actions.ts` files
+- Mark files with 'use server' directive
+- Always validate input data with Zod schemas
+- Implement proper error handling
+- Return serializable data only
+- Use revalidatePath() or revalidateTag() for cache updates
+- Handle authentication in actions
+
+## Server Action Structure
+
+- Keep actions focused and single-purpose
+- Use descriptive action names (e.g., `createUser`, `updateProfile`)
+- Validate authentication at the start of each action
+- Parse and validate input with Zod
+- Use try-catch blocks for error handling
+- Return consistent response format (success/error)
+
+## API Routes (Route Handlers)
+
+- Place API routes in `app/api` directory
+- Export named functions: GET, POST, PUT, DELETE, PATCH
+- Validate request data with Zod schemas
+- Return proper HTTP status codes
+- Use NextResponse for responses
+- Implement proper error handling
+- Add authentication checks
+
+## Request Validation
+
+- Validate all incoming data (body, params, query)
+- Use Zod schemas for validation
+- Return 400 Bad Request for validation errors
+- Sanitize input data
+- Check Content-Type headers
+- Validate file uploads properly
+
+## Response Handling
+
+- Return consistent JSON structure
+- Use proper HTTP status codes (200, 201, 400, 401, 403, 404, 500)
+- Include error messages in error responses
+- Don't expose internal error details to clients
+- Use NextResponse.json() for JSON responses
+- Set appropriate headers (Content-Type, Cache-Control)
+
+## Authentication & Authorization
+
+- Check auth in every Server Action and API route
+- Use Supabase server client for auth checks
+- Return 401 for unauthenticated requests
+- Return 403 for unauthorized requests
+- Validate user permissions
+- Handle expired sessions
+
+## Error Handling
+
+- Use try-catch blocks in all actions/routes
+- Return user-friendly error messages
+- Log errors for monitoring
+- Don't expose stack traces to clients
+- Handle Supabase errors specifically
+- Return proper status codes
+
+## Database Operations
+
+- Use Supabase server client for database access
+- Implement proper transaction handling
+- Handle database errors gracefully
+- Use RLS policies for security
+- Validate data before database operations
+- Return typed responses
+
+## Performance
+
+- Use streaming responses for large data
+- Implement proper caching with revalidate
+- Minimize database queries
+- Use database indexes effectively
+- Implement pagination for large datasets
+- Cache frequently accessed data
+
+## Security
+
+- Always validate input data
+- Implement rate limiting
+- Use CSRF protection
+- Validate Content-Type headers
+- Sanitize user input
+- Use parameterized queries (Supabase handles this)
+- Implement proper CORS headers
+- Don't expose sensitive data
+
+## Revalidation
+
+- Use revalidatePath() to refresh specific routes
+- Use revalidateTag() for tagged cache entries
+- Revalidate after mutations
+- Use appropriate revalidation strategies
+- Handle revalidation errors
+- Consider on-demand revalidation
+
+## Testing
+
+- Write unit tests for Server Actions
+- Test validation logic thoroughly
+- Test error scenarios
+- Mock Supabase client in tests
+- Test authentication/authorization
+- Test edge cases
+
+## Best Practices
+
+- Keep actions simple and focused
+- Return serializable data only
+- Use TypeScript for type safety
+- Implement proper logging
+- Handle edge cases gracefully
+- Document complex actions
+- Use consistent naming conventions

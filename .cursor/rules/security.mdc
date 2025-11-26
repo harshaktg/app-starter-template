@@ -1,0 +1,205 @@
+---
+description: Security best practices for Next.js and Supabase applications
+globs: **/*.ts, **/*.tsx, app/**/*
+---
+
+# Security Best Practices
+
+## Authentication Security
+
+- Always validate authentication server-side
+- Never trust client-side auth state alone
+- Use HTTP-only cookies for session storage
+- Implement proper session timeout
+- Use secure cookie settings (Secure, SameSite)
+- Rotate tokens regularly
+- Implement account lockout after failed attempts
+- Log authentication events
+
+## Authorization
+
+- Implement proper authorization checks
+- Check permissions on every protected action
+- Use Row Level Security (RLS) in Supabase
+- Don't rely on UI hiding for security
+- Validate permissions server-side
+- Use principle of least privilege
+- Audit authorization regularly
+- Log authorization failures
+
+## Data Protection
+
+- Never expose sensitive data in client code
+- Don't log sensitive information
+- Mask sensitive data in logs
+- Use environment variables for secrets
+- Never commit secrets to git
+- Encrypt sensitive data at rest
+- Use HTTPS everywhere
+- Sanitize data before display
+
+## Input Validation
+
+- Validate all user input server-side
+- Use Zod schemas for validation
+- Sanitize input to prevent XSS
+- Validate file uploads (type, size, content)
+- Reject unexpected input
+- Use allowlists over denylists
+- Validate data types and formats
+- Check string lengths
+
+## XSS Prevention
+
+- Use React's built-in XSS protection (JSX escaping)
+- Avoid dangerouslySetInnerHTML when possible
+- Sanitize HTML when necessary (use DOMPurify)
+- Set proper Content-Security-Policy headers
+- Validate and sanitize user input
+- Escape data in different contexts appropriately
+- Don't build HTML strings manually
+- Use textContent instead of innerHTML
+
+## CSRF Protection
+
+- Use SameSite cookie attribute
+- Implement CSRF tokens for state-changing operations
+- Verify origin headers
+- Use POST for state-changing operations
+- Don't use GET for mutations
+- Validate referrer headers
+- Use double-submit cookie pattern
+- Leverage Next.js built-in protections
+
+## SQL Injection
+
+- Use Supabase parameterized queries (automatic)
+- Never build SQL queries with string concatenation
+- Use Supabase query builder
+- Validate input before database operations
+- Use type-safe query builders
+- Limit database permissions
+- Use prepared statements
+- Implement query monitoring
+
+## API Security
+
+- Implement rate limiting
+- Use authentication for all protected endpoints
+- Validate all API inputs
+- Return appropriate error codes
+- Don't expose internal error details
+- Use API versioning
+- Implement request throttling
+- Log suspicious activity
+
+## Environment Variables
+
+- Use .env.local for local development
+- Never commit .env files to git
+- Use different values for dev/staging/production
+- Prefix public variables with NEXT_PUBLIC_
+- Validate required env vars at startup
+- Rotate secrets regularly
+- Use secret management systems in production
+- Document required environment variables
+
+## Dependency Security
+
+- Keep dependencies updated
+- Use npm audit or pnpm audit regularly
+- Review security advisories
+- Use lock files (package-lock.json, pnpm-lock.yaml)
+- Minimize dependency count
+- Audit new dependencies before adding
+- Use automated security scanning
+- Monitor for vulnerabilities
+
+## Headers Security
+
+- Set Content-Security-Policy header
+- Use X-Frame-Options to prevent clickjacking
+- Set X-Content-Type-Options: nosniff
+- Use Strict-Transport-Security (HSTS)
+- Set Referrer-Policy appropriately
+- Use Permissions-Policy
+- Implement proper CORS headers
+- Remove X-Powered-By header
+
+## File Upload Security
+
+- Validate file types (content, not extension)
+- Limit file sizes
+- Scan files for malware
+- Store files outside web root
+- Use Supabase Storage with RLS
+- Generate unique filenames
+- Implement upload rate limiting
+- Validate file content
+
+## Password Security
+
+- Use Supabase Auth password hashing
+- Enforce strong password requirements
+- Implement password strength meter
+- Don't store passwords in plain text
+- Support password managers
+- Implement password reset securely
+- Prevent password enumeration
+- Consider multi-factor authentication
+
+## Session Management
+
+- Use secure, HTTP-only cookies
+- Implement proper session timeout
+- Invalidate sessions on logout
+- Rotate session tokens
+- Use Supabase SSR for session handling
+- Implement concurrent session limits
+- Log session events
+- Handle expired sessions gracefully
+
+## Logging and Monitoring
+
+- Log security events (auth, authorization, errors)
+- Monitor for suspicious activity
+- Don't log sensitive data
+- Implement alerting for security events
+- Use structured logging
+- Retain logs appropriately
+- Implement audit trails
+- Review logs regularly
+
+## Supabase Security
+
+- Enable Row Level Security (RLS) on all tables
+- Use service_role key only server-side
+- Implement proper RLS policies
+- Use anon key for client-side
+- Enable email verification
+- Configure proper OAuth settings
+- Use Supabase Edge Functions securely
+- Monitor database security
+
+## Error Handling
+
+- Don't expose stack traces to users
+- Log errors securely
+- Return generic error messages
+- Handle errors gracefully
+- Don't leak sensitive information in errors
+- Implement proper error boundaries
+- Monitor error patterns
+- Use error tracking services
+
+## Best Practices
+
+- Follow principle of least privilege
+- Implement defense in depth
+- Keep security up to date
+- Conduct security reviews
+- Use security linters (ESLint security plugins)
+- Implement security testing
+- Stay informed about vulnerabilities
+- Document security measures
+- Train team on security practices

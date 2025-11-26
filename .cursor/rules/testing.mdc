@@ -1,0 +1,152 @@
+---
+description: Testing strategies for Next.js, React, TypeScript, and Supabase
+globs: **/*.test.ts, **/*.test.tsx, **/*.spec.ts, **/*.spec.tsx, __tests__/**/*
+---
+
+# Testing Best Practices
+
+## Testing Strategy
+
+- Write tests for critical business logic
+- Test user interactions and workflows
+- Test edge cases and error scenarios
+- Mock external dependencies (Supabase, APIs)
+- Test accessibility requirements
+- Maintain high test coverage for utilities and hooks
+
+## Unit Testing
+
+- Test individual functions and components in isolation
+- Use Jest for unit tests
+- Mock dependencies with jest.mock()
+- Test pure functions thoroughly
+- Test custom hooks with @testing-library/react-hooks
+- Keep tests focused and simple
+
+## Component Testing
+
+- Use React Testing Library for component tests
+- Test user behavior, not implementation details
+- Query elements by accessible roles and labels
+- Test user interactions (click, type, submit)
+- Test loading and error states
+- Avoid testing internal component state
+
+## Integration Testing
+
+- Test complete user flows
+- Test interaction between multiple components
+- Test with realistic data
+- Mock only external dependencies
+- Test authentication flows
+- Test form submissions end-to-end
+
+## Mocking Supabase
+
+- Mock Supabase client in tests
+- Create mock data factories
+- Mock authentication state
+- Mock database queries and responses
+- Test error scenarios from Supabase
+- Use consistent mock data across tests
+
+## Testing Patterns
+
+- Arrange-Act-Assert pattern
+- Use descriptive test names
+- One assertion per test (when possible)
+- Test the happy path first
+- Then test edge cases and errors
+- Clean up after tests (cleanup in afterEach)
+
+## Server Actions Testing
+
+- Test Server Actions in isolation
+- Mock Supabase server client
+- Test validation logic thoroughly
+- Test authentication checks
+- Test error handling
+- Mock revalidatePath and revalidateTag
+
+## API Route Testing
+
+- Test API routes with mock requests
+- Test all HTTP methods
+- Test request validation
+- Test authentication and authorization
+- Test error responses
+- Test response formats
+
+## Testing Hooks
+
+- Use @testing-library/react-hooks
+- Test hook state changes
+- Test hook side effects
+- Test error scenarios
+- Test with different props
+- Clean up subscriptions
+
+## Testing Forms
+
+- Test form submission
+- Test validation errors
+- Test loading states
+- Test success scenarios
+- Test accessibility
+- Test keyboard navigation
+
+## Accessibility Testing
+
+- Use jest-axe for automated a11y testing
+- Test keyboard navigation
+- Test screen reader labels
+- Test ARIA attributes
+- Test focus management
+- Test color contrast
+
+## Snapshot Testing
+
+- Use snapshots sparingly
+- Review snapshot changes carefully
+- Don't snapshot large components
+- Update snapshots intentionally
+- Use for stable UI components
+- Avoid for dynamic content
+
+## Test Coverage
+
+- Aim for high coverage on critical paths
+- 80%+ coverage for utilities and helpers
+- Don't chase 100% coverage blindly
+- Focus on meaningful tests
+- Use coverage reports to find gaps
+- Test business logic thoroughly
+
+## Performance Testing
+
+- Test component render performance
+- Test memo effectiveness
+- Identify expensive re-renders
+- Use React DevTools Profiler
+- Test with realistic data sizes
+- Optimize slow tests
+
+## E2E Testing (Optional)
+
+- Use Playwright for E2E tests
+- Test critical user journeys
+- Test on multiple browsers
+- Test authentication flows
+- Test with real Supabase instance (test project)
+- Run E2E tests in CI/CD
+
+## Best Practices
+
+- Write tests alongside code
+- Run tests before commits
+- Keep tests fast
+- Use test-driven development when appropriate
+- Refactor tests like production code
+- Maintain test utilities and helpers
+- Use TypeScript in tests
+- Document complex test setups

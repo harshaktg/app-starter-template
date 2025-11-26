@@ -1,0 +1,205 @@
+---
+description: Performance optimization strategies for Next.js applications
+globs: **/*.tsx, **/*.ts, app/**/*
+---
+
+# Performance Best Practices
+
+## React Performance
+
+- Use Server Components by default
+- Mark Client Components explicitly with 'use client'
+- Implement proper memoization (React.memo, useMemo, useCallback)
+- Avoid unnecessary re-renders
+- Use key props correctly in lists
+- Minimize component tree depth
+- Extract static content outside components
+- Use proper dependency arrays in hooks
+
+## Code Splitting
+
+- Use dynamic imports for large components
+- Implement route-based code splitting
+- Lazy load non-critical features
+- Use next/dynamic for client components
+- Split vendor bundles appropriately
+- Analyze bundle size with Next.js Bundle Analyzer
+- Minimize initial bundle size
+- Load third-party scripts strategically
+
+## Image Optimization
+
+- Always use next/image component
+- Set proper width and height attributes
+- Use appropriate image formats (WebP, AVIF)
+- Implement lazy loading (default in next/image)
+- Use proper sizes attribute for responsive images
+- Optimize image quality settings
+- Use blur placeholders for better UX
+- Consider using Supabase Storage with CDN
+
+## Data Fetching
+
+- Use Server Components for data fetching
+- Implement proper caching strategies
+- Use parallel data fetching when possible
+- Minimize waterfall requests
+- Implement proper loading states
+- Use streaming with Suspense
+- Cache frequently accessed data
+- Prefetch data when appropriate
+
+## Caching Strategies
+
+- Use appropriate cache headers
+- Implement revalidation with revalidatePath/revalidateTag
+- Use static generation when possible
+- Implement ISR (Incremental Static Regeneration)
+- Cache API responses appropriately
+- Use CDN for static assets
+- Implement browser caching
+- Use SWR or React Query for client-side caching
+
+## Database Performance
+
+- Use database indexes effectively
+- Minimize database queries
+- Implement query optimization
+- Use select to fetch only needed fields
+- Implement pagination for large datasets
+- Use Supabase connection pooling
+- Cache database queries when appropriate
+- Monitor query performance
+
+## Bundle Optimization
+
+- Minimize bundle size
+- Use tree shaking effectively
+- Remove unused dependencies
+- Use proper import strategies
+- Avoid importing entire libraries
+- Use barrel exports carefully
+- Implement code splitting
+- Monitor bundle size in CI/CD
+
+## Font Optimization
+
+- Use next/font for font optimization
+- Load fonts from local files when possible
+- Minimize font weights and variants
+- Use font-display: swap
+- Preload critical fonts
+- Remove unused font variants
+- Consider variable fonts
+- Subset fonts when possible
+
+## Third-Party Scripts
+
+- Use next/script component
+- Load scripts with appropriate strategy (afterInteractive, lazyOnload)
+- Minimize third-party scripts
+- Defer non-critical scripts
+- Monitor third-party impact on performance
+- Consider alternatives to heavy libraries
+- Load scripts conditionally
+- Use web workers for heavy computation
+
+## CSS Performance
+
+- Use Tailwind CSS purge/content configuration
+- Minimize custom CSS
+- Extract critical CSS
+- Use CSS modules for component styles
+- Avoid inline styles when possible
+- Minimize CSS specificity
+- Use CSS containment when appropriate
+- Remove unused Tailwind classes
+
+## Core Web Vitals
+
+- Monitor Largest Contentful Paint (LCP)
+- Optimize First Input Delay (FID) / Interaction to Next Paint (INP)
+- Minimize Cumulative Layout Shift (CLS)
+- Use Lighthouse for performance audits
+- Monitor real user metrics (RUM)
+- Set performance budgets
+- Test on various devices and networks
+- Optimize for mobile performance
+
+## Server-Side Performance
+
+- Minimize Server Component computation
+- Use edge runtime when appropriate
+- Implement proper error boundaries
+- Optimize Server Actions
+- Use streaming for large responses
+- Minimize middleware overhead
+- Implement proper rate limiting
+- Monitor server performance
+
+## State Management Performance
+
+- Minimize client-side state
+- Use proper context splitting
+- Avoid unnecessary context re-renders
+- Implement proper memo patterns
+- Use state selectors effectively
+- Minimize prop drilling
+- Use Zustand or similar for complex state
+- Profile state updates
+
+## Network Performance
+
+- Minimize HTTP requests
+- Use HTTP/2 or HTTP/3
+- Implement proper compression
+- Use CDN for static assets
+- Implement resource hints (preconnect, prefetch)
+- Minimize payload sizes
+- Use proper cache headers
+- Optimize API response sizes
+
+## Rendering Performance
+
+- Use Server Components when possible
+- Minimize client-side JavaScript
+- Implement proper loading strategies
+- Use Suspense boundaries appropriately
+- Avoid layout thrashing
+- Batch DOM updates
+- Use requestAnimationFrame for animations
+- Minimize paint and composite operations
+
+## Monitoring and Testing
+
+- Use Next.js Analytics
+- Implement performance monitoring (Vercel Analytics, Sentry)
+- Monitor Core Web Vitals
+- Use Lighthouse CI
+- Test on real devices
+- Monitor bundle size changes
+- Set up performance budgets
+- Profile with React DevTools
+
+## Mobile Performance
+
+- Optimize for mobile networks
+- Test on low-end devices
+- Minimize JavaScript execution
+- Implement progressive enhancement
+- Use proper touch targets
+- Optimize for mobile viewports
+- Test on various mobile devices
+- Consider offline functionality
+
+## Best Practices
+
+- Measure before optimizing
+- Focus on user-perceived performance
+- Set performance budgets
+- Monitor performance in production
+- Implement progressive enhancement
+- Test on various devices and networks
+- Use performance profiling tools
+- Document performance optimizations
+- Regular performance audits

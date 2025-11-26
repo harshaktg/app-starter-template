@@ -1,0 +1,97 @@
+---
+description: Authentication patterns and best practices with Supabase Auth
+globs: app/**/*, lib/supabase/**/*, components/auth-*
+---
+
+# Authentication Best Practices
+
+## Supabase Auth Setup
+
+- Use `@supabase/ssr` for server-side authentication
+- Create separate clients for server and client components
+- Never expose `service_role` key in client code
+- Use environment variables for Supabase credentials
+- Configure proper auth redirects
+- Set up proper CORS and allowed domains
+
+## Server-Side Authentication
+
+- Use `createClient()` from `@/lib/supabase/server` in Server Components
+- Check auth status in layouts for protected routes
+- Use middleware for route-level protection
+- Implement proper session validation
+- Handle expired sessions gracefully
+- Refresh tokens automatically
+
+## Client-Side Authentication
+
+- Use `createClient()` from `@/lib/supabase/client` in Client Components
+- Subscribe to auth state changes with `onAuthStateChange`
+- Handle loading states during auth operations
+- Clear local state on logout
+- Implement proper error handling
+- Show appropriate feedback to users
+
+## Protected Routes
+
+- Implement auth checks in layout.tsx for protected sections
+- Redirect unauthenticated users to login
+- Show loading state while checking auth
+- Handle edge cases (expired tokens, network errors)
+- Implement proper error boundaries
+- Use middleware for app-wide protection
+
+## Authentication Flows
+
+- Email/Password: Validate input, handle errors, confirm email
+- Magic Link: Send email, handle callback, verify token
+- OAuth: Configure providers, handle callback, merge accounts
+- Password Reset: Send reset email, validate token, update password
+- Email Verification: Send confirmation, handle callback
+- Account Updates: Re-authenticate for sensitive operations
+
+## Session Management
+
+- Store sessions in HTTP-only cookies
+- Use Supabase SSR for automatic token refresh
+- Handle session expiry gracefully
+- Implement proper logout (clear cookies and local state)
+- Don't store sensitive data in localStorage
+- Validate sessions on every protected request
+
+## Security Best Practices
+
+- Always validate auth on server-side
+- Never trust client-side auth state alone
+- Implement CSRF protection
+- Use secure, HTTP-only cookies
+- Validate email addresses before signup
+- Implement rate limiting for auth endpoints
+- Log security events (failed logins, password changes)
+
+## Error Handling
+
+- Show user-friendly error messages
+- Don't expose internal error details
+- Handle network errors gracefully
+- Implement retry logic for transient failures
+- Log errors for monitoring
+- Provide helpful recovery steps
+
+## User Experience
+
+- Show loading states during auth operations
+- Implement proper redirects after auth actions
+- Remember user's intended destination
+- Show success feedback after operations
+- Handle auth errors gracefully
+- Implement proper accessibility for forms
+
+## Authorization Patterns
+
+- Check user roles and permissions server-side
+- Use Row Level Security (RLS) in Supabase
+- Implement proper access control checks
+- Don't rely on UI hiding for security
+- Validate permissions before data access
+- Use Supabase policies for database security

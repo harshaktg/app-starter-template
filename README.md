@@ -1,109 +1,213 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# Next.js + Supabase Starter Template
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+A modern, production-ready starter template for building full-stack applications with Next.js 15, Supabase, and TypeScript. This template provides a complete authentication system, beautiful UI components, and a scalable project structure to kickstart your next project.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+## 🚀 Tech Stack
 
-## Features
+- **Framework:** [Next.js](https://nextjs.org/) 16.0.4 (App Router)
+- **Language:** [TypeScript](https://www.typescriptlang.org/) 5.9.3
+- **UI Library:** [React](https://react.dev/) 19.2.0
+- **Authentication & Database:** [Supabase](https://supabase.com/) 2.84.0
+  - [@supabase/supabase-js](https://supabase.com/docs/reference/javascript) 2.84.0
+  - [@supabase/ssr](https://supabase.com/docs/guides/auth/server-side/creating-a-client) 0.7.0
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) 3.4.18
+- **UI Components:** [shadcn/ui](https://ui.shadcn.com/) + [Radix UI](https://www.radix-ui.com/)
+- **Theme:** Dark/Light mode with [next-themes](https://github.com/pacocoursey/next-themes) 0.4.6
+- **Icons:** [Lucide React](https://lucide.dev/) 0.511.0
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Proxy
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+## ✨ Features
 
-## Demo
+### Authentication
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+- ✅ Email/Password authentication
+- ✅ Sign up with email verification
+- ✅ Login functionality
+- ✅ Forgot password flow
+- ✅ Update password
+- ✅ Protected routes with middleware
+- ✅ Server and client-side auth helpers
 
-## Deploy to Vercel
+### UI/UX
 
-Vercel deployment will guide you through creating a Supabase account and project.
+- ✅ Modern, responsive design
+- ✅ Dark/Light theme toggle
+- ✅ Pre-built shadcn/ui components
+- ✅ Tailwind CSS for styling
+- ✅ Professional form components
+- ✅ Loading states and error handling
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+### Developer Experience
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+- ✅ TypeScript for type safety
+- ✅ ESLint configuration
+- ✅ Organized project structure
+- ✅ Supabase client configurations (Server, Client, Proxy)
+- ✅ Environment variable validation
+- ✅ Ready for deployment
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+## 📁 Project Structure
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+```
+├── app/
+│   ├── auth/                    # Authentication routes
+│   │   ├── login/              # Login page
+│   │   ├── sign-up/            # Sign up page
+│   │   ├── forgot-password/    # Password recovery
+│   │   ├── update-password/    # Password update
+│   │   └── confirm/            # Email confirmation
+│   ├── protected/              # Protected routes (requires auth)
+│   ├── layout.tsx              # Root layout
+│   └── page.tsx                # Home page
+├── components/
+│   ├── auth-button.tsx         # Authentication button
+│   ├── login-form.tsx          # Login form component
+│   ├── sign-up-form.tsx        # Sign up form component
+│   ├── forgot-password-form.tsx
+│   ├── update-password-form.tsx
+│   ├── theme-switcher.tsx      # Dark/Light mode toggle
+│   ├── ui/                     # shadcn/ui components
+│   └── tutorial/               # Tutorial components
+├── lib/
+│   ├── supabase/
+│   │   ├── client.ts           # Client-side Supabase client
+│   │   ├── server.ts           # Server-side Supabase client
+│   │   └── proxy.ts            # Proxy configuration
+│   └── utils.ts                # Utility functions
+└── tailwind.config.ts          # Tailwind configuration
+```
 
-## Clone and run locally
+## 🏁 Getting Started
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+### Prerequisites
 
-2. Create a Next.js app using the Supabase Starter template npx command
+- Node.js 20.9.0 or higher
+- pnpm (Package Manager)
+- A Supabase account ([create one here](https://supabase.com))
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+### 1. Clone the repository
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+```bash
+git clone <your-repo-url>
+cd next-supabase-starter
+```
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+### 2. Install dependencies
 
-3. Use `cd` to change into the app's directory
+```bash
+pnpm install
+```
 
-   ```bash
-   cd with-supabase-app
-   ```
+### 3. Set up Supabase
 
-4. Rename `.env.example` to `.env.local` and update the following:
+1. Create a new project in your [Supabase Dashboard](https://supabase.com/dashboard)
+2. Go to Project Settings > API
+3. Copy your project URL and anon/public key
 
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
-  ```
-  > [!NOTE]
-  > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
-  > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
-  > See the [full announcement](https://github.com/orgs/supabase/discussions/29260) for more information.
+### 4. Configure environment variables
 
-  Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+Create a `.env.local` file in the root directory:
 
-5. You can now run the Next.js local development server:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-anon-key
+```
 
-   ```bash
-   npm run dev
-   ```
+> **Note:** You can find these values in your Supabase project's [API settings](https://supabase.com/dashboard/project/_/settings/api)
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+### 5. Run the development server
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+```bash
+pnpm dev
+```
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-## Feedback and issues
+## 🛠️ Available Scripts
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+```bash
+pnpm dev         # Start development server
+pnpm build       # Build for production
+pnpm start       # Start production server
+pnpm lint        # Run ESLint
+```
 
-## More Supabase examples
+## 🎨 Customizing UI Components
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+This template uses shadcn/ui components. To add more components:
+
+```bash
+pnpm dlx shadcn@latest add [component-name]
+```
+
+To customize the theme, modify the `tailwind.config.ts` and `app/globals.css` files.
+
+## 🔐 Authentication Flow
+
+### Server Components
+
+```typescript
+import { createClient } from "@/lib/supabase/server";
+
+const supabase = await createClient();
+const {
+  data: { user },
+} = await supabase.auth.getUser();
+```
+
+### Client Components
+
+```typescript
+import { createClient } from "@/lib/supabase/client";
+
+const supabase = createClient();
+const {
+  data: { user },
+} = await supabase.auth.getUser();
+```
+
+## 🚢 Deployment
+
+### Deploy to Vercel
+
+The easiest way to deploy is using [Vercel](https://vercel.com):
+
+1. Push your code to GitHub
+2. Import your repository to Vercel
+3. Add environment variables in Vercel dashboard:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+4. Deploy!
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+
+### Other Platforms
+
+This template can be deployed to any platform that supports Next.js:
+
+- [Netlify](https://www.netlify.com/)
+- [Railway](https://railway.app/)
+- [Render](https://render.com/)
+- Self-hosted with Docker
+
+## 📚 Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [shadcn/ui Documentation](https://ui.shadcn.com)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 💬 Support
+
+If you have any questions or need help, please open an issue in the repository.
+
+---
+
+Built with ❤️ using Next.js and Supabase

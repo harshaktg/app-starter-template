@@ -1,0 +1,147 @@
+---
+description: Web accessibility (a11y) best practices for inclusive applications
+globs: **/*.tsx, **/*.jsx, components/**/*
+---
+
+# Accessibility Best Practices
+
+## Semantic HTML
+
+- Use proper HTML elements for their intended purpose
+- Use `<button>` for actions, `<a>` for navigation
+- Use heading hierarchy properly (h1 → h2 → h3)
+- Use `<nav>`, `<main>`, `<article>`, `<aside>` appropriately
+- Use `<form>` for data input
+- Avoid `<div>` and `<span>` for interactive elements
+
+## ARIA Attributes
+
+- Use ARIA only when semantic HTML is insufficient
+- Prefer semantic HTML over ARIA when possible
+- Use `aria-label` and `aria-labelledby` for accessible names
+- Use `aria-describedby` for additional descriptions
+- Implement `aria-live` regions for dynamic content
+- Use `aria-hidden` to hide decorative elements from screen readers
+- Set `aria-expanded`, `aria-selected`, `aria-checked` for state
+
+## Keyboard Navigation
+
+- Ensure all interactive elements are keyboard accessible
+- Support Tab, Enter, Space, Escape, and Arrow keys
+- Implement proper focus order (tab index)
+- Don't trap keyboard focus unintentionally
+- Show visible focus indicators
+- Support keyboard shortcuts where appropriate
+- Test navigation with keyboard only
+
+## Focus Management
+
+- Set focus appropriately after actions (modal open, page load)
+- Return focus after modal/dialog closes
+- Skip to main content link for keyboard users
+- Show clear focus indicators (outline, ring)
+- Don't remove focus styles without replacement
+- Handle focus in dynamic content
+- Use `autoFocus` prop appropriately
+
+## Forms Accessibility
+
+- Label all form inputs with `<label>` element
+- Use `htmlFor` to associate labels with inputs
+- Group related inputs with `<fieldset>` and `<legend>`
+- Provide clear error messages
+- Use `aria-invalid` and `aria-describedby` for errors
+- Show required fields clearly
+- Provide helpful placeholder text (don't rely on it)
+- Support autocomplete attributes
+
+## Images and Media
+
+- Provide alt text for all images
+- Use empty alt (`alt=""`) for decorative images
+- Provide captions for videos
+- Provide transcripts for audio content
+- Don't convey information through images alone
+- Use proper contrast for text overlays
+- Provide audio descriptions when needed
+
+## Color and Contrast
+
+- Maintain WCAG AA contrast ratio (4.5:1 for normal text)
+- Don't rely on color alone to convey information
+- Test with high contrast mode
+- Support dark mode properly
+- Ensure focus indicators have sufficient contrast
+- Test with color blindness simulators
+- Use patterns or labels in addition to color
+
+## Screen Readers
+
+- Test with screen readers (NVDA, JAWS, VoiceOver)
+- Provide meaningful link text (not "click here")
+- Use descriptive button labels
+- Announce dynamic content changes
+- Use `aria-live` for notifications
+- Hide decorative icons from screen readers
+- Provide context for ambiguous elements
+
+## Dynamic Content
+
+- Use `aria-live` for content updates
+- Set `aria-busy` during loading
+- Announce errors and success messages
+- Manage focus after content changes
+- Provide loading states
+- Handle content removal gracefully
+- Support prefers-reduced-motion
+
+## Interactive Components
+
+- Make custom components keyboard accessible
+- Implement proper ARIA roles for custom widgets
+- Support expected keyboard interactions
+- Provide accessible names and descriptions
+- Indicate state changes (expanded, selected, checked)
+- Use native elements when possible (select, checkbox)
+- Test with assistive technologies
+
+## Navigation
+
+- Provide skip links to main content
+- Use proper heading hierarchy
+- Implement breadcrumb navigation with ARIA
+- Mark current page in navigation
+- Provide multiple ways to navigate
+- Support landmarks properly
+- Include a sitemap for complex sites
+
+## Testing
+
+- Use automated testing (jest-axe, Lighthouse)
+- Test with keyboard only
+- Test with screen readers
+- Test with browser zoom (200%+)
+- Test with high contrast mode
+- Test with color blindness simulators
+- Conduct user testing with people with disabilities
+
+## shadcn/ui Components
+
+- Use accessible shadcn/ui components
+- Customize while maintaining accessibility
+- Test custom variants for accessibility
+- Use proper ARIA attributes with components
+- Implement keyboard interactions properly
+- Test with assistive technologies
+- Follow Radix UI accessibility guidelines
+
+## Best Practices
+
+- Consider accessibility from the start
+- Follow WCAG 2.1 Level AA guidelines
+- Test regularly with assistive technologies
+- Include people with disabilities in user testing
+- Provide accessibility documentation
+- Train team on accessibility standards
+- Monitor accessibility in CI/CD
+- Stay updated on accessibility best practices

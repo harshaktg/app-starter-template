@@ -1,12 +1,29 @@
-'use client';
+"use client";
 
-import { useChat } from 'ai/react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
+import { useState } from "react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 
 export function AIChat() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+  const [input, setInput] = useState("");
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+    }),
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (input.trim()) {
+      sendMessage({ text: input });
+      setInput("");
+    }
+  };
+
+  const isLoading = status === "streaming" || status === "submitted";
 
   return (
     <div className="flex flex-col w-full max-w-3xl mx-auto gap-4">
@@ -21,21 +38,26 @@ export function AIChat() {
             <div
               key={message.id}
               className={`flex ${
-                message.role === 'user' ? 'justify-end' : 'justify-start'
+                message.role === "user" ? "justify-end" : "justify-start"
               }`}
             >
               <div
                 className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                  message.role === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted'
+                  message.role === "user"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted"
                 }`}
               >
                 <div className="text-sm font-semibold mb-1">
-                  {message.role === 'user' ? 'You' : 'AI'}
+                  {message.role === "user" ? "You" : "AI"}
                 </div>
                 <div className="text-sm whitespace-pre-wrap">
-                  {message.content}
+                  {message.parts.map((part, index) => {
+                    if (part.type === "text") {
+                      return <span key={index}>{part.text}</span>;
+                    }
+                    return null;
+                  })}
                 </div>
               </div>
             </div>
@@ -57,7 +79,7 @@ export function AIChat() {
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Input
             value={input}
-            onChange={handleInputChange}
+            onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
             disabled={isLoading}
             className="flex-1"
@@ -70,4 +92,3 @@ export function AIChat() {
     </div>
   );
 }
-

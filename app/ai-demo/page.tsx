@@ -1,5 +1,6 @@
-import { AIChat } from '@/components/ai-chat';
-import { InfoIcon } from 'lucide-react';
+import { AIChat } from "@/components/ai-chat";
+import { InfoIcon } from "lucide-react";
+import { Suspense } from "react";
 
 export default function AIDemoPage() {
   return (
@@ -11,17 +12,25 @@ export default function AIDemoPage() {
         </p>
 
         <div className="bg-accent text-sm p-4 rounded-md text-foreground flex gap-3 items-start mb-8">
-          <InfoIcon size="20" strokeWidth={2} className="flex-shrink-0 mt-0.5" />
+          <InfoIcon
+            size="20"
+            strokeWidth={2}
+            className="flex-shrink-0 mt-0.5"
+          />
           <div>
             <p className="font-semibold mb-1">Setup Required</p>
             <p className="text-sm">
-              Add your OpenAI API key to <code className="bg-background px-1 py-0.5 rounded">.env.local</code>:
+              Add your OpenAI API key to{" "}
+              <code className="bg-background px-1 py-0.5 rounded">
+                .env.local
+              </code>
+              :
             </p>
             <code className="block mt-2 bg-background px-2 py-1 rounded text-xs">
               OPENAI_API_KEY=your_api_key_here
             </code>
             <p className="text-xs mt-2">
-              Get your API key from{' '}
+              Get your API key from{" "}
               <a
                 href="https://platform.openai.com/api-keys"
                 target="_blank"
@@ -34,9 +43,10 @@ export default function AIDemoPage() {
           </div>
         </div>
 
-        <AIChat />
+        <Suspense fallback={<div>Loading chat...</div>}>
+          <AIChat />
+        </Suspense>
       </div>
     </div>
   );
 }
-

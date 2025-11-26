@@ -1,0 +1,355 @@
+---
+description: React Flow best practices for building node-based UIs and interactive diagrams
+globs: **/*.tsx, **/*.ts
+---
+
+# React Flow Best Practices
+
+## Installation & Setup
+
+- Install React Flow: `pnpm add @xyflow/react`
+- Import styles: `import '@xyflow/react/dist/style.css'`
+- Use TypeScript for type safety
+- Wrap flow in a container with defined height
+- Use 'use client' directive in Next.js
+
+## Core Concepts
+
+### Nodes
+- Nodes represent elements in the flow
+- Each node requires unique `id`, `position`, and `data`
+- Use `type` to specify node type (input, output, default, custom)
+- Position is `{ x: number, y: number }`
+- Data object contains node-specific information
+
+### Edges
+- Edges connect nodes
+- Require `id`, `source`, and `target` node IDs
+- Support labels, styling, and animations
+- Can be directional with markers
+- Support custom edge types
+
+### State Management
+- Use `useNodesState` and `useEdgesState` hooks
+- These hooks handle node/edge changes automatically
+- Provide `onNodesChange` and `onEdgesChange` handlers
+- Use callbacks for optimal performance
+
+## Basic Setup
+
+```typescript
+const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+const onConnect = useCallback(
+  (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+  [setEdges]
+);
+```
+
+## Component Structure
+
+- Keep flow container with defined height (e.g., `h-[600px]`)
+- Use responsive sizing when needed
+- Include Controls for zoom/fit view
+- Add MiniMap for navigation
+- Use Background for visual reference
+- Position controls appropriately
+
+## Custom Nodes
+
+- Create custom node components
+- Define node types in `nodeTypes` prop
+- Use `Handle` component for connection points
+- Position handles with `Position` enum
+- Style with Tailwind CSS or custom CSS
+- Keep nodes simple and focused
+
+### Custom Node Example
+```typescript
+const CustomNode = ({ data }: NodeProps) => {
+  return (
+    <div className="px-4 py-2 shadow-md rounded-md bg-white border-2">
+      <Handle type="target" position={Position.Top} />
+      <div>{data.label}</div>
+      <Handle type="source" position={Position.Bottom} />
+    </div>
+  );
+};
+```
+
+## Custom Edges
+
+- Create custom edge components
+- Define edge types in `edgeTypes` prop
+- Use `getBezierPath`, `getSmoothStepPath`, `getStraightPath`
+- Add labels with `EdgeText` component
+- Implement custom markers
+- Handle edge interactions
+
+## Interactivity
+
+### Dragging
+- Nodes are draggable by default
+- Use `draggable={false}` to disable
+- Use `nodesDraggable` for all nodes
+- Handle drag events with callbacks
+
+### Selection
+- Click to select nodes/edges
+- Multi-select with Shift key
+- Use `selectable` prop per node/edge
+- Style selected state with CSS
+- Handle selection changes
+
+### Connection
+- Drag from handles to create edges
+- Use `onConnect` callback
+- Validate connections with `isValidConnection`
+- Prevent invalid connections
+- Style connection line
+
+## Layout
+
+### Auto Layout
+- Use external libraries (dagre, elkjs, etc.)
+- Calculate positions programmatically
+- Apply layout algorithms
+- Update node positions
+- Re-fit view after layout
+
+### Manual Layout
+- Position nodes with drag and drop
+- Save/restore positions
+- Grid snapping for alignment
+- Helper lines for positioning
+- Alignment tools
+
+## State Persistence
+
+- Save flow state to Supabase
+- Store nodes and edges as JSON
+- Implement save/restore functionality
+- Use `toObject()` and `fromObject()`
+- Version control flow data
+- Handle migrations
+
+## Performance
+
+- Use `useMemo` for expensive computations
+- Implement virtual scrolling for large flows
+- Lazy load node/edge components
+- Optimize re-renders
+- Use `shouldComponentUpdate` patterns
+- Profile with React DevTools
+
+## Styling
+
+### Tailwind Integration
+- Style nodes with Tailwind classes
+- Use dark mode support
+- Apply responsive styles
+- Use theme variables
+- Custom node backgrounds
+
+### CSS Variables
+- Use React Flow CSS variables
+- Customize colors and sizes
+- Support theme switching
+- Override default styles
+- Use consistent design tokens
+
+## Controls
+
+- Use `<Controls />` component
+- Position with `position` prop
+- Customize button visibility
+- Add custom control buttons
+- Style controls consistently
+
+## MiniMap
+
+- Use `<MiniMap />` component
+- Position appropriately
+- Customize colors
+- Show/hide based on flow size
+- Style minimap nodes
+
+## Background
+
+- Use `<Background />` component
+- Choose variant (dots, lines, cross)
+- Customize gap and size
+- Match theme colors
+- Layer correctly
+
+## Viewport
+
+- Use `fitView()` to center flow
+- Zoom programmatically
+- Get/set viewport
+- Handle viewport changes
+- Implement viewport constraints
+
+## Edge Types
+
+### Bezier Edges
+- Smooth curves
+- Good for most use cases
+- Natural flow appearance
+
+### Straight Edges
+- Direct connections
+- Clean, minimal look
+- Good for simple flows
+
+### Step Edges
+- Right-angle connections
+- Technical diagram style
+- Good for workflows
+
+### Smooth Step Edges
+- Rounded step connections
+- Modern appearance
+- Best of both worlds
+
+## Handles
+
+- Use `<Handle />` component
+- Position with `Position` enum
+- Set type (source or target)
+- Multiple handles per node
+- Custom handle validation
+
+## Node Toolbar
+
+- Use `<NodeToolbar />` component
+- Show on node selection
+- Position relative to node
+- Add action buttons
+- Style consistently
+
+## Edge Label Renderer
+
+- Use `<EdgeLabelRenderer />` for performance
+- Render edge labels efficiently
+- Custom label components
+- Position labels accurately
+- Handle label interactions
+
+## Accessibility
+
+- Add ARIA labels to nodes
+- Support keyboard navigation
+- Handle focus management
+- Screen reader support
+- Announce changes
+
+## Testing
+
+- Test node interactions
+- Test edge connections
+- Mock React Flow components
+- Test custom nodes/edges
+- Snapshot test layouts
+
+## Integration with Supabase
+
+- Store flow data in database
+- Implement real-time collaboration
+- Save user-specific flows
+- Version control flows
+- Share flows between users
+
+## Common Patterns
+
+### Workflow Builder
+- Input/output nodes
+- Process nodes
+- Decision nodes
+- Save/restore workflows
+- Execute workflows
+
+### Data Visualization
+- Hierarchical data
+- Network graphs
+- Tree structures
+- Mind maps
+- Org charts
+
+### Diagramming Tool
+- Custom shapes
+- Connectors
+- Text labels
+- Export to image
+- Import from files
+
+## Error Handling
+
+- Validate node connections
+- Handle missing nodes
+- Catch edge errors
+- Show error states
+- Provide error recovery
+
+## Advanced Features
+
+### Sub Flows
+- Nested flows
+- Parent-child relationships
+- Group nodes
+- Expand/collapse groups
+
+### Node Resizing
+- Use `<NodeResizer />` component
+- Set size constraints
+- Handle resize events
+- Update connected edges
+
+### Custom Connection Lines
+- Style active connections
+- Show connection validation
+- Add connection markers
+- Animate connections
+
+### Computing Flows
+- Calculate node relationships
+- Find paths between nodes
+- Detect cycles
+- Validate flow logic
+
+## Performance Optimization
+
+- Virtualization for large flows
+- Lazy loading
+- Memoization
+- Debounce updates
+- Optimize re-renders
+
+## Deployment
+
+- Bundle size optimization
+- Tree shaking
+- Code splitting
+- CDN for assets
+- Performance monitoring
+
+## Resources
+
+- [React Flow Docs](https://reactflow.dev/learn)
+- [Examples](https://reactflow.dev/examples)
+- [API Reference](https://reactflow.dev/api-reference)
+- [Showcase](https://reactflow.dev/showcase)
+
+## Best Practices
+
+- Use TypeScript for type safety
+- Keep nodes and edges simple
+- Implement proper state management
+- Test interactions thoroughly
+- Optimize for performance
+- Follow accessibility guidelines
+- Document complex flows
+- Version control flow schemas
+- Handle errors gracefully
+- Provide good UX feedback

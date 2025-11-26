@@ -1,6 +1,8 @@
-# Next.js + Supabase Starter Template
+# Next.js + Supabase + React Flow Starter Template
 
-A modern, production-ready starter template for building full-stack applications with Next.js 15, Supabase, and TypeScript. This template provides a complete authentication system, beautiful UI components, and a scalable project structure to kickstart your next project.
+> **🎨 Canvas Branch**: This branch includes [React Flow](https://reactflow.dev/) integration for building node-based editors and interactive diagrams.
+
+A modern, production-ready starter template for building full-stack applications with Next.js 16, Supabase, TypeScript, and interactive canvas capabilities. This template provides a complete authentication system, beautiful UI components, flow builder interface, and a scalable project structure to kickstart your next project.
 
 ## 🚀 Tech Stack
 
@@ -10,6 +12,7 @@ A modern, production-ready starter template for building full-stack applications
 - **Authentication & Database:** [Supabase](https://supabase.com/) 2.84.0
   - [@supabase/supabase-js](https://supabase.com/docs/reference/javascript) 2.84.0
   - [@supabase/ssr](https://supabase.com/docs/guides/auth/server-side/creating-a-client) 0.7.0
+- **Canvas:** [React Flow](https://reactflow.dev/) 12.9.3 for node-based UIs
 - **State Management:** [Zustand](https://zustand.docs.pmnd.rs/) 5.0.8
 - **Validation:** [Zod](https://zod.dev/) 4.1.13
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/) 3.4.18
@@ -37,6 +40,16 @@ A modern, production-ready starter template for building full-stack applications
 - ✅ Tailwind CSS for styling
 - ✅ Professional form components
 - ✅ Loading states and error handling
+
+### Canvas Features
+
+- ✅ React Flow integration
+- ✅ Interactive node-based editor
+- ✅ Drag-and-drop nodes
+- ✅ Visual connections between nodes
+- ✅ MiniMap and controls
+- ✅ Zoom, pan, and navigate flows
+- ✅ Perfect for workflows, diagrams, and visualizations
 
 ### Developer Experience
 
@@ -127,6 +140,8 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
+Visit [http://localhost:3000/canvas-demo](http://localhost:3000/canvas-demo) to try the interactive canvas.
+
 ## 🛠️ Available Scripts
 
 ```bash
@@ -146,37 +161,81 @@ pnpm dlx shadcn@latest add [component-name]
 
 To customize the theme, modify the `tailwind.config.ts` and `app/globals.css` files.
 
-## 🧪 Testing (Optional)
+## 🎨 Canvas Features
 
-This template has a separate branch with full testing support:
+This branch includes [React Flow](https://reactflow.dev/) integration for building node-based UIs:
 
-**Branch: `with-testing`**
+### What's Included
 
-Includes:
+- ✅ **Flow Canvas Component**: Reusable interactive canvas with controls
+- ✅ **Demo Page**: `/canvas-demo` - Try the interactive flow builder
+- ✅ **MiniMap & Controls**: Built-in navigation and zoom controls
+- ✅ **Cursor Rule**: React Flow best practices in `.cursor/rules/react-flow.mdc`
+- ✅ **Type-Safe**: Full TypeScript support
 
+### Quick Start
+
+1. Visit `/canvas-demo` to try the interactive canvas
+
+2. Use the flow canvas in your app:
+```typescript
+import { FlowCanvas } from '@/components/flow-canvas';
+
+export default function MyPage() {
+  return <FlowCanvas />;
+}
+```
+
+### Use Cases
+
+- **Workflow Builders**: Visual workflow automation
+- **Diagrams**: Flowcharts, org charts, mind maps
+- **Data Visualization**: Network graphs, tree structures
+- **Process Modeling**: Business process diagrams
+- **AI Workflows**: Visual AI agent builders
+
+### Customization
+
+- Create custom node types
+- Add custom edge styles
+- Implement auto-layout algorithms
+- Save/restore flows to Supabase
+- Add real-time collaboration
+
+### Resources
+
+- [React Flow Docs](https://reactflow.dev/learn)
+- [Examples](https://reactflow.dev/examples)
+- [API Reference](https://reactflow.dev/api-reference)
+
+## 🧪 Other Branches
+
+### `with-ai` - AI SDK Integration
+- **Vercel AI SDK** for AI-powered features
+- **OpenAI Integration** with streaming chat
+- Type-safe AI responses
+
+```bash
+git checkout with-ai
+```
+
+### `with-testing` - Full Testing Support
 - **Playwright** for E2E testing
 - **Vitest** for unit testing
 - **React Testing Library** for component testing
-- Pre-configured test setup
-- Example tests for auth flows
-- GitHub Actions workflow for CI/CD
-
-To use the testing setup:
 
 ```bash
 git checkout with-testing
-pnpm install
-pnpm test           # Run unit tests
-pnpm test:e2e       # Run E2E tests
 ```
 
-> **Note:** The main branch is kept lightweight for quick prototyping. Switch to `with-testing` when you're ready to add comprehensive test coverage.
+> **Note:** The main branch is kept lightweight. Switch to feature branches when you need specific capabilities.
 
 ## 📐 Cursor Rules
 
-This template includes **18 comprehensive Cursor Rules** covering:
+This template includes **19 comprehensive Cursor Rules** covering:
 
 - **Core Stack:** Next.js, React, TypeScript, Tailwind CSS, Zod, Zustand
+- **Canvas:** React Flow (node-based UIs and diagrams) ✨
 - **Backend & Auth:** Database, Authentication, Server Actions
 - **Development:** Testing, Clean Code, Code Quality, File Naming
 - **Production:** Security, Performance, Error Handling, Accessibility

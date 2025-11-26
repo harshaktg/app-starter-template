@@ -46,6 +46,7 @@ A modern, production-ready starter template for building full-stack applications
 - ✅ ESLint configuration
 - ✅ Organized project structure
 - ✅ Supabase client configurations (Server, Client, Proxy)
+- ✅ **Comprehensive Cursor Rules** for best practices
 - ✅ Environment variable validation
 - ✅ Ready for deployment
 
@@ -144,6 +145,46 @@ pnpm dlx shadcn@latest add [component-name]
 ```
 
 To customize the theme, modify the `tailwind.config.ts` and `app/globals.css` files.
+
+## 🧪 Testing (Optional)
+
+This template has a separate branch with full testing support:
+
+**Branch: `with-testing`**
+
+Includes:
+
+- **Playwright** for E2E testing
+- **Vitest** for unit testing
+- **React Testing Library** for component testing
+- Pre-configured test setup
+- Example tests for auth flows
+- GitHub Actions workflow for CI/CD
+
+To use the testing setup:
+
+```bash
+git checkout with-testing
+pnpm install
+pnpm test           # Run unit tests
+pnpm test:e2e       # Run E2E tests
+```
+
+> **Note:** The main branch is kept lightweight for quick prototyping. Switch to `with-testing` when you're ready to add comprehensive test coverage.
+
+## 📐 Cursor Rules
+
+This template includes **18 comprehensive Cursor Rules** covering:
+
+- **Core Stack:** Next.js, React, TypeScript, Tailwind CSS, Zod, Zustand
+- **Backend & Auth:** Database, Authentication, Server Actions
+- **Development:** Testing, Clean Code, Code Quality, File Naming
+- **Production:** Security, Performance, Error Handling, Accessibility
+- **Workflow:** Git Commit Messages
+
+These rules provide AI-assisted coding guidance and enforce best practices across your development workflow.
+
+**View rules:** `.cursor/rules/` directory
 
 ## 🔐 Authentication Flow
 

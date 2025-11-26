@@ -1,0 +1,405 @@
+---
+description: File and folder naming conventions for consistent project organization
+globs: **/*
+---
+
+# File & Naming Conventions
+
+## File Naming Patterns
+
+### React Components
+
+- Use **kebab-case** for component files: `auth-button.tsx`, `user-profile.tsx`
+- Use **PascalCase** for component names: `AuthButton`, `UserProfile`
+- Keep file names descriptive and specific
+- Avoid generic names like `component.tsx`, `index.tsx` (except for barrel exports)
+
+### TypeScript Files
+
+- Use **kebab-case** for utility files: `format-date.ts`, `api-client.ts`
+- Use **camelCase** for variable/function names inside files
+- Use descriptive names that reveal purpose
+
+### Test Files
+
+- Place tests alongside the code they test
+- Use `.test.ts` or `.test.tsx` for unit/component tests
+- Use `.spec.ts` for Playwright E2E tests
+- Mirror the tested file name: `auth-button.tsx` → `auth-button.test.tsx`
+- Place E2E tests in `/tests` directory
+
+### Next.js Special Files
+
+- Use Next.js conventions: `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`
+- Use `route.ts` for API routes
+- Use `middleware.ts` in root for middleware
+- Use `actions.ts` for Server Actions in route directories
+
+### Configuration Files
+
+- Keep root-level configs in kebab-case: `next.config.ts`, `tailwind.config.ts`
+- Use standard names: `package.json`, `tsconfig.json`, `.env.local`
+
+## Directory Structure
+
+### App Directory (`app/`)
+
+- Use **kebab-case** for route folders: `app/user-profile/`, `app/auth/login/`
+- Group related routes in folders
+- Use route groups with parentheses: `(marketing)`, `(dashboard)`
+- Keep route segments lowercase
+
+### Components Directory (`components/`)
+
+- Use **kebab-case** for folders: `components/auth-button/`
+- Keep related components together
+- Use `ui/` subdirectory for shadcn/ui components
+- Create feature folders when needed: `components/dashboard/`
+
+### Library Directory (`lib/`)
+
+- Use **kebab-case** for folders: `lib/supabase/`, `lib/utils/`
+- Group by functionality: `lib/validation/`, `lib/helpers/`
+- Keep utilities organized by domain
+
+### Store/State Directory (`lib/store/` or `stores/`)
+
+- Use **kebab-case** for store files: `ui-store.ts`, `user-store.ts`
+- Suffix with `-store.ts` for clarity
+- Keep stores in dedicated directory
+
+### Types Directory (`types/` or `lib/types/`)
+
+- Use **kebab-case**: `user.ts`, `api-response.ts`
+- Create `index.ts` for barrel exports
+- Group related types together
+
+### Test Directory (`tests/` or `__tests__/`)
+
+- Mirror app structure for E2E tests
+- Use descriptive folder names: `tests/auth/`, `tests/dashboard/`
+- Keep test utilities in `tests/helpers/`
+
+## Barrel Exports (index.ts)
+
+### When to Use
+
+- Use for exporting multiple related items from a directory
+- Use in `components/ui/` for shadcn/ui components
+- Use in `lib/` for utilities
+- Use in `types/` for type definitions
+
+### When NOT to Use
+
+- Don't use in route directories (`app/`)
+- Don't use if only one item to export
+- Avoid for performance-critical paths (can increase bundle size)
+- Don't use in Server Components (can cause issues)
+
+### Barrel Export Pattern
+
+```typescript
+// components/dashboard/index.ts
+export { DashboardHeader } from "./dashboard-header";
+export { DashboardSidebar } from "./dashboard-sidebar";
+export { DashboardStats } from "./dashboard-stats";
+```
+
+## Component Organization
+
+### Single Component File
+
+```
+auth-button.tsx         # Small, self-contained component
+```
+
+### Component with Styles/Tests
+
+```
+auth-button/
+  ├── auth-button.tsx         # Main component
+  ├── auth-button.test.tsx    # Tests
+  └── auth-button.module.css  # Styles (if not using Tailwind)
+```
+
+### Complex Component (Multiple Files)
+
+```
+user-profile/
+  ├── index.ts                    # Barrel export
+  ├── user-profile.tsx            # Main component
+  ├── user-profile.test.tsx       # Tests
+  ├── user-profile-header.tsx     # Sub-component
+  ├── user-profile-avatar.tsx     # Sub-component
+  └── types.ts                    # Component-specific types
+```
+
+## Route Organization
+
+### Simple Route
+
+```
+app/dashboard/
+  ├── page.tsx          # Route component
+  ├── loading.tsx       # Loading UI
+  └── error.tsx         # Error UI
+```
+
+### Complex Route
+
+```
+app/dashboard/
+  ├── page.tsx              # Route component
+  ├── layout.tsx            # Layout
+  ├── loading.tsx           # Loading UI
+  ├── error.tsx             # Error UI
+  ├── actions.ts            # Server Actions
+  └── [id]/                 # Dynamic route
+      ├── page.tsx
+      └── loading.tsx
+```
+
+## Naming Conventions by Type
+
+### Components
+
+- **PascalCase**: `AuthButton`, `UserProfile`, `DashboardLayout`
+- Descriptive and specific
+- Avoid generic names: ~~`Component`~~, ~~`Wrapper`~~
+- Use domain-specific names
+
+### Hooks
+
+- **camelCase** with `use` prefix: `useAuth`, `useSupabaseClient`, `useUserData`
+- Name should describe what it does or returns
+- Keep names action-oriented
+
+### Utilities/Helpers
+
+- **camelCase**: `formatDate`, `calculateTotal`, `validateEmail`
+- Use verb-noun pattern when possible
+- Keep names descriptive
+
+### Constants
+
+- **UPPER_SNAKE_CASE**: `MAX_FILE_SIZE`, `API_ENDPOINTS`, `DEFAULT_CONFIG`
+- Use for true constants only
+- Group related constants in objects when appropriate
+
+### Types/Interfaces
+
+- **PascalCase**: `User`, `AuthResponse`, `DatabaseError`
+- Use `Props` suffix for component props: `AuthButtonProps`
+- Use `Type` suffix sparingly: `UserType` (only if `User` is taken)
+- Use descriptive names
+
+### Enums
+
+- **PascalCase** for enum name: `UserRole`, `Status`
+- **UPPER_SNAKE_CASE** for enum values: `UserRole.ADMIN`, `Status.IN_PROGRESS`
+
+### Server Actions
+
+- **camelCase**: `loginUser`, `updateProfile`, `deletePost`
+- Use verb-noun pattern
+- Keep action-oriented
+- Group in `actions.ts` files
+
+### API Routes
+
+- **kebab-case** for folders: `api/user-profile/`, `api/auth/login/`
+- Use RESTful patterns when appropriate
+- Keep route names lowercase
+
+## Special Patterns
+
+### Private/Internal Files
+
+- Prefix with underscore: `_internal-helper.ts`, `_config.ts`
+- Use for files that shouldn't be imported externally
+- Next.js ignores `_` prefixed files in `app/` directory
+
+### Environment Files
+
+- `.env.local` for local development
+- `.env.example` for template (commit to git)
+- `.env.production` for production (don't commit)
+
+### Configuration Files
+
+- Keep in root directory
+- Use standard names: `next.config.ts`, `tailwind.config.ts`, `playwright.config.ts`
+- Use TypeScript when possible (`.ts` over `.js`)
+
+### Story Files (if using Storybook)
+
+- Use `.stories.tsx`: `auth-button.stories.tsx`
+- Place alongside component
+- Mirror component name
+
+## Imports Organization
+
+### Import Order
+
+1. React/Next.js imports
+2. External library imports (alphabetical)
+3. Internal absolute imports (`@/...`)
+4. Relative imports (parent directories)
+5. Relative imports (same directory)
+6. Type imports (group at end or use inline)
+
+### Path Aliases
+
+- Use `@/` for root imports: `@/components/`, `@/lib/`, `@/types/`
+- Avoid deep relative imports: ~~`../../../components/`~~
+- Keep imports clean and readable
+
+## Best Practices
+
+### DO
+
+- ✅ Use consistent casing throughout project
+- ✅ Keep file names descriptive and specific
+- ✅ Group related files together
+- ✅ Use Next.js conventions for special files
+- ✅ Co-locate tests with source files
+- ✅ Use path aliases for cleaner imports
+- ✅ Follow established patterns in codebase
+
+### DON'T
+
+- ❌ Mix casing conventions (kebab-case and camelCase for files)
+- ❌ Use generic names (`component.tsx`, `utils.ts`)
+- ❌ Create deeply nested folder structures
+- ❌ Overuse barrel exports (performance cost)
+- ❌ Use spaces in file names
+- ❌ Use uppercase in URLs/routes
+- ❌ Create circular dependencies
+
+## Migration Guide
+
+### Renaming Files
+
+- Update imports across codebase
+- Check for dynamic imports
+- Update test references
+- Verify build still works
+- Update documentation
+
+### Restructuring Folders
+
+- Plan structure before moving files
+- Move in small batches
+- Test after each batch
+- Update imports systematically
+- Use IDE refactoring tools when possible
+
+## Examples
+
+### Good File Structure
+
+```
+app/
+  ├── (auth)/
+  │   ├── login/
+  │   │   ├── page.tsx
+  │   │   └── actions.ts
+  │   └── sign-up/
+  │       ├── page.tsx
+  │       └── actions.ts
+  └── dashboard/
+      ├── page.tsx
+      ├── layout.tsx
+      └── [id]/
+          └── page.tsx
+
+components/
+  ├── auth-button.tsx
+  ├── user-avatar.tsx
+  └── ui/
+      ├── button.tsx
+      ├── card.tsx
+      └── input.tsx
+
+lib/
+  ├── supabase/
+  │   ├── client.ts
+  │   ├── server.ts
+  │   └── types.ts
+  ├── utils.ts
+  └── store/
+      ├── ui-store.ts
+      └── user-store.ts
+
+tests/
+  ├── auth/
+  │   ├── login.spec.ts
+  │   └── sign-up.spec.ts
+  └── helpers/
+      └── test-utils.ts
+```
+
+### Good Naming Examples
+
+```typescript
+// Components
+auth-button.tsx → export const AuthButton
+user-profile-card.tsx → export const UserProfileCard
+
+// Hooks
+use-auth.ts → export const useAuth
+use-supabase-client.ts → export const useSupabaseClient
+
+// Utilities
+format-date.ts → export const formatDate
+validate-email.ts → export const validateEmail
+
+// Types
+user.ts → export interface User
+api-response.ts → export type ApiResponse
+
+// Server Actions
+actions.ts → export async function loginUser()
+
+// Tests
+auth-button.test.tsx
+login.spec.ts (E2E)
+```
+
+## Project-Specific Conventions
+
+### Next.js App Router
+
+- Follow App Router conventions strictly
+- Use proper special file names
+- Keep route segments lowercase with dashes
+
+### Supabase Integration
+
+- Keep Supabase clients in `lib/supabase/`
+- Use `client.ts` for client-side
+- Use `server.ts` for server-side
+- Use `types.ts` for database types
+
+### Testing Files
+
+- Use `.test.tsx` for Vitest/RTL tests
+- Use `.spec.ts` for Playwright E2E tests
+- Keep test files alongside source when possible
+- Use `tests/` for E2E Playwright tests
+
+### shadcn/ui Components
+
+- Keep in `components/ui/`
+- Don't rename shadcn/ui components
+- Extend with wrapper components when needed
+- Use kebab-case for file names
+
+## Enforcement
+
+- Use ESLint for code conventions
+- Use Prettier for formatting
+- Document conventions in README
+- Review in pull requests
+- Use consistent patterns across team
+- Update conventions as project evolves

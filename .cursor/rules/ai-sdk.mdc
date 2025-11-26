@@ -1,70 +1,174 @@
 ---
 description: Vercel AI SDK best practices for building AI-powered applications
-globs: app/api/**/route.ts, **/*.tsx, **/*.ts
+globs:
+  - "**/*.tsx"
+  - "**/*.ts"
+  - "app/api/**/*.ts"
+  - "components/**/*.tsx"
 ---
 
 # Vercel AI SDK Best Practices
 
+## Version Notice
+
+**This project uses AI SDK v5.** Be aware of the differences between v5 and v6 (beta):
+
+### AI SDK v5 (Current)
+
+- Import from: `@ai-sdk/react` (for hooks), `ai` (for core functions)
+- `useChat()` returns: `{ messages, sendMessage, status }`
+- Status values: `'ready' | 'submitted' | 'streaming' | 'error'`
+- Messages have `.parts` array (not `.content`)
+- API route returns: `result.toUIMessageStreamResponse()`
+- Use `convertToModelMessages()` to convert UIMessages
+- Transport: `new DefaultChatTransport({ api: '/api/chat' })`
+
+### AI SDK v6 Beta
+
+- Import from: `ai` (unified package)
+- Different API signatures
+- Different return types
+- `toDataStreamResponse()` instead of `toUIMessageStreamResponse()`
+
+**Always refer to AI SDK v5 documentation for this project.**
+
 ## Installation & Setup
 
 - Install AI SDK: `pnpm add ai`
+- Install React hooks: `pnpm add @ai-sdk/react`
 - Install provider: `pnpm add @ai-sdk/openai` (or other providers)
 - Store API keys in `.env.local`
 - Never commit API keys to version control
 - Use environment variables: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, etc.
 - Set `maxDuration` in route handlers for streaming responses
 
-## Route Handlers
+## Route Handlers (API Routes)
 
 - Create API routes in `app/api/` directory
 - Use `POST` method for AI requests
-- Set proper `maxDuration` for streaming (default: 30s)
+- Set proper `maxDuration` for streaming (e.g., 30s)
 - Use `streamText()` for text generation
-- Use `generateText()` for non-streaming responses
-- Use `generateObject()` for structured outputs
-- Return `result.toDataStreamResponse()` for streaming
+- Use `convertToModelMessages()` to convert UIMessage[] to model format
+- Return `result.toUIMessageStreamResponse()` for v5 streaming
+- Import types: `type UIMessage` from `ai`
+
+### Example API Route (v5)
+
+```typescript
+import { openai } from "@ai-sdk/openai";
+import { streamText, convertToModelMessages, type UIMessage } from "ai";
+
+export const maxDuration = 30;
+
+export async function POST(req: Request) {
+  const { messages }: { messages: UIMessage[] } = await req.json();
+
+  const result = streamText({
+    model: openai("gpt-4o-mini"),
+    messages: convertToModelMessages(messages),
+  });
+
+  return result.toUIMessageStreamResponse();
+}
+```
 
 ## Client-Side Hooks
 
-### useChat()
-- Use for chat interfaces
-- Provides `messages`, `input`, `handleSubmit`, `isLoading`
+### useChat() (v5)
+
+- Import from `@ai-sdk/react`
+- Returns: `{ messages, sendMessage, status, stop }`
+- `messages`: Array of UIMessage with `.parts` property
+- `sendMessage()`: Send message with `{ text: string }`
+- `status`: `'ready' | 'submitted' | 'streaming' | 'error'`
+- Use `DefaultChatTransport` to configure API endpoint
 - Automatically manages message history
 - Handles streaming responses
-- Pass `api` prop to customize endpoint
+
+### Example useChat (v5)
+
+```typescript
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+
+const { messages, sendMessage, status } = useChat({
+  transport: new DefaultChatTransport({
+    api: "/api/chat",
+  }),
+});
+
+// Send a message
+sendMessage({ text: "Hello AI!" });
+
+// Check status
+const isLoading = status === "streaming" || status === "submitted";
+
+// Render messages
+messages.map((message) => (
+  <div key={message.id}>
+    {message.parts.map((part, i) =>
+      part.type === "text" ? <span key={i}>{part.text}</span> : null
+    )}
+  </div>
+));
+```
 
 ### useCompletion()
+
 - Use for text completion interfaces
 - Provides `completion`, `input`, `handleSubmit`, `isLoading`
 - Streams text token by token
 - Good for writing assistants, autocomplete
 
 ### useObject()
+
 - Use for generating structured data
 - Validates against Zod schemas
 - Returns typed objects
 - Good for forms, data extraction
 
+## Message Structure (v5)
+
+### UIMessage Format
+
+```typescript
+{
+  id: string;
+  role: 'user' | 'assistant' | 'system';
+  parts: Array<{
+    type: 'text' | 'tool-invocation' | 'tool-result' | ...;
+    text?: string;  // For text parts
+    // ... other part-specific properties
+  }>;
+}
+```
+
+**Important:** Messages have `.parts` array, not `.content` string!
+
 ## AI Providers
 
 ### OpenAI
+
 - Use `@ai-sdk/openai`
 - Models: `gpt-4o`, `gpt-4o-mini`, `gpt-3.5-turbo`
 - Best for general-purpose tasks
 - Good streaming performance
 
 ### Anthropic
+
 - Use `@ai-sdk/anthropic`
 - Models: `claude-3-5-sonnet`, `claude-3-opus`, `claude-3-haiku`
 - Excellent for reasoning and analysis
 - Strong context handling
 
 ### Google
+
 - Use `@ai-sdk/google`
 - Models: `gemini-pro`, `gemini-pro-vision`
 - Good for multimodal tasks
 
 ### Custom Providers
+
 - Use `@ai-sdk/provider` for custom implementations
 - Support for local models (Ollama, LM Studio)
 - Can wrap any OpenAI-compatible API
@@ -74,9 +178,10 @@ globs: app/api/**/route.ts, **/*.tsx, **/*.ts
 - Always use streaming for better UX
 - Set `maxDuration` in route config
 - Use `streamText()` for text responses
-- Handle loading states in UI
-- Show typing indicators
+- Handle loading states in UI with `status` from `useChat()`
+- Show typing indicators during streaming
 - Implement proper error boundaries
+- Check `status === 'streaming'` for active streaming
 
 ## Structured Outputs
 
@@ -86,9 +191,10 @@ globs: app/api/**/route.ts, **/*.tsx, **/*.ts
 - Good for forms, data extraction, function calling
 
 ### Example with Zod
+
 ```typescript
-import { z } from 'zod';
-import { generateObject } from 'ai';
+import { z } from "zod";
+import { generateObject } from "ai";
 
 const schema = z.object({
   name: z.string(),
@@ -97,9 +203,9 @@ const schema = z.object({
 });
 
 const { object } = await generateObject({
-  model: openai('gpt-4o-mini'),
+  model: openai("gpt-4o-mini"),
   schema,
-  prompt: 'Generate user data',
+  prompt: "Generate user data",
 });
 ```
 
@@ -112,9 +218,10 @@ const { object } = await generateObject({
 - Handle tool errors gracefully
 
 ### Tool Definition
+
 ```typescript
 const weatherTool = {
-  description: 'Get weather for a location',
+  description: "Get weather for a location",
   parameters: z.object({
     location: z.string(),
   }),
@@ -127,23 +234,25 @@ const weatherTool = {
 ## Error Handling
 
 - Wrap AI calls in try-catch blocks
-- Handle rate limits gracefully
+- Handle rate limits gracefully (429 errors)
 - Show user-friendly error messages
 - Implement retry logic for transient failures
 - Log errors for monitoring
-- Handle timeouts appropriately
+- Handle timeouts appropriately (set maxDuration)
 - Validate API keys on startup
+- Check `status === 'error'` in useChat
 
 ## Security
 
 - Never expose API keys in client code
-- Use route handlers for AI calls
+- Always use API route handlers for AI calls
 - Validate user input before sending to AI
-- Implement rate limiting
-- Add authentication checks
+- Implement rate limiting on API routes
+- Add authentication checks to AI endpoints
 - Sanitize AI responses before displaying
 - Monitor API usage and costs
 - Implement usage quotas per user
+- Use environment variables for all secrets
 
 ## Performance
 
@@ -154,136 +263,190 @@ const weatherTool = {
 - Implement request deduplication
 - Monitor response times
 - Use edge runtime when possible
+- Cache embeddings when using RAG
 
 ## Prompt Engineering
 
 - Write clear, specific prompts
-- Provide examples in prompts
-- Use system messages for context
+- Provide examples in prompts (few-shot learning)
+- Use system messages for context and instructions
 - Structure prompts consistently
-- Test prompts thoroughly
+- Test prompts thoroughly with different inputs
 - Version control prompts
-- Use prompt templates
-- Implement prompt testing
+- Use prompt templates for reusability
+- Implement A/B testing for prompts
 
 ## State Management
 
-- Use Zustand for complex AI state
+- Use Zustand for complex AI state (conversation history, etc.)
 - Store conversation history appropriately
-- Manage loading states properly
-- Handle message streaming state
-- Clear state when needed
+- Manage loading states with `status` from `useChat()`
+- Handle message streaming state automatically
+- Clear state when needed (new conversation)
 - Persist conversations to database (Supabase)
-- Implement optimistic updates
+- Implement optimistic updates for better UX
 
 ## Testing
 
 - Mock AI responses in tests
-- Test error scenarios
+- Test error scenarios (network failures, API errors)
 - Test streaming behavior
 - Test tool calling
-- Validate response schemas
+- Validate response schemas with Zod
 - Test rate limiting
 - Test timeout handling
+- Use fixtures for consistent test data
 
 ## UI/UX Best Practices
 
-- Show loading indicators
+- Show loading indicators based on `status`
 - Display streaming text token by token
-- Implement message bubbles for chat
-- Add typing indicators
+- Implement message bubbles for chat interfaces
+- Add typing indicators during streaming
 - Show error states clearly
 - Allow message regeneration
-- Implement copy/share functionality
-- Add syntax highlighting for code
+- Implement copy/share functionality for messages
+- Add syntax highlighting for code in responses
+- Use Suspense boundaries for better loading states
 
 ## Cost Optimization
 
-- Use smaller models when appropriate
-- Implement caching
-- Set reasonable `maxTokens`
+- Use smaller models when appropriate (gpt-4o-mini vs gpt-4o)
+- Implement response caching
+- Set reasonable `maxTokens` limits
 - Monitor usage with analytics
 - Implement user quotas
-- Use prompt compression
-- Cache embeddings
-- Batch similar requests
+- Use prompt compression techniques
+- Cache embeddings in database
+- Batch similar requests when possible
 
 ## Multimodal
 
 - Use vision models for image analysis
-- Support file uploads
+- Support file uploads in chat
 - Handle different content types
 - Validate file types and sizes
 - Process images efficiently
 - Provide image previews
+- Support multiple file formats
 
 ## Rate Limiting
 
-- Implement client-side throttling
-- Use server-side rate limiting
+- Implement client-side request throttling
+- Use server-side rate limiting middleware
 - Handle 429 responses gracefully
-- Show retry-after information
+- Show retry-after information to users
 - Queue requests when needed
 - Implement exponential backoff
+- Log rate limit hits for monitoring
 
 ## Deployment
 
 - Set environment variables in production
-- Use edge runtime for lower latency
-- Configure proper `maxDuration`
-- Monitor API costs
-- Set up error tracking
+- Use edge runtime for lower latency when possible
+- Configure proper `maxDuration` for serverless functions
+- Monitor API costs and usage
+- Set up error tracking (Sentry, etc.)
 - Implement usage analytics
-- Use CDN for static AI responses
+- Use CDN for static AI responses/assets
+- Test thoroughly in staging environment
 
 ## Integration with Supabase
 
 - Store conversations in Supabase database
-- Use RLS for user-specific chats
-- Implement real-time chat features
-- Store AI-generated content
-- Track usage per user
-- Implement conversation search
-- Archive old conversations
-
-## Best Practices
-
-- Start with streaming for better UX
-- Use TypeScript for type safety
-- Implement proper error boundaries
-- Test with different models
-- Monitor costs and usage
-- Implement user feedback
-- Version your prompts
-- Document AI features
-- Handle edge cases gracefully
-- Keep prompts in separate files
-- Use consistent message formats
-- Implement proper logging
+- Use RLS (Row Level Security) for user-specific chats
+- Implement real-time chat features with Supabase Realtime
+- Store AI-generated content securely
+- Track usage per user in database
+- Implement conversation search functionality
+- Archive old conversations for cost savings
+- Use Supabase Edge Functions for AI processing
 
 ## Common Patterns
 
-### Chat Interface
+### Chat Interface (v5)
+
 ```typescript
-const { messages, input, handleInputChange, handleSubmit } = useChat();
+"use client";
+
+import { useState } from "react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+
+export function Chat() {
+  const [input, setInput] = useState("");
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({ api: "/api/chat" }),
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (input.trim()) {
+      sendMessage({ text: input });
+      setInput("");
+    }
+  };
+
+  const isLoading = status === "streaming" || status === "submitted";
+
+  return (
+    <div>
+      {messages.map((message) => (
+        <div key={message.id}>
+          {message.role}:{" "}
+          {message.parts.map((part, i) =>
+            part.type === "text" ? <span key={i}>{part.text}</span> : null
+          )}
+        </div>
+      ))}
+      <form onSubmit={handleSubmit}>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          disabled={isLoading}
+        />
+        <button type="submit" disabled={isLoading}>
+          Send
+        </button>
+      </form>
+    </div>
+  );
+}
 ```
 
-### Text Completion
-```typescript
-const { completion, input, handleInputChange, handleSubmit } = useCompletion();
-```
+## Best Practices Summary
 
-### Structured Data Generation
-```typescript
-const { object, isLoading } = useObject({
-  api: '/api/generate',
-  schema: mySchema,
-});
-```
+- ✅ Always use streaming for better UX
+- ✅ Use TypeScript for type safety
+- ✅ Implement proper error boundaries
+- ✅ Test with different models and prompts
+- ✅ Monitor costs and usage continuously
+- ✅ Implement user feedback mechanisms
+- ✅ Version your prompts
+- ✅ Document AI features thoroughly
+- ✅ Handle edge cases gracefully
+- ✅ Keep prompts in separate files or database
+- ✅ Use consistent message formats
+- ✅ Implement proper logging and monitoring
+- ✅ Use `status` for loading states (v5)
+- ✅ Access message content via `.parts` array (v5)
+- ✅ Use `convertToModelMessages()` in API routes (v5)
+- ✅ Return `toUIMessageStreamResponse()` (v5)
 
 ## Resources
 
-- [AI SDK Documentation](https://ai-sdk.dev/)
+- [AI SDK v5 Documentation](https://ai-sdk.dev/)
 - [Provider Registry](https://ai-sdk.dev/providers)
 - [Examples](https://ai-sdk.dev/examples)
 - [API Reference](https://ai-sdk.dev/docs)
+- [Migration Guide (v4 to v5)](https://ai-sdk.dev/docs/migration-guides/migration-guide-5-0)
+
+## Common Pitfalls (v5)
+
+- ❌ **Don't** use `.content` on messages (use `.parts` array)
+- ❌ **Don't** use `toDataStreamResponse()` (that's v6 beta)
+- ❌ **Don't** check `status === 'in-progress'` (use `'streaming'` or `'submitted'`)
+- ❌ **Don't** forget to use `convertToModelMessages()` in API routes
+- ❌ **Don't** import from wrong packages (`ai` vs `@ai-sdk/react`)
+- ❌ **Don't** expose API keys in client components
+- ❌ **Don't** forget to set `maxDuration` for long-running requests

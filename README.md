@@ -1,6 +1,8 @@
-# Next.js + Supabase Starter Template
+# Next.js + Supabase + AI Starter Template
 
-A modern, production-ready starter template for building full-stack applications with Next.js 15, Supabase, and TypeScript. This template provides a complete authentication system, beautiful UI components, and a scalable project structure to kickstart your next project.
+> **🤖 AI-Powered Branch**: This branch includes [Vercel AI SDK](https://ai-sdk.dev/) integration with OpenAI for building AI-powered features.
+
+A modern, production-ready starter template for building full-stack applications with Next.js 16, Supabase, TypeScript, and AI capabilities. This template provides a complete authentication system, beautiful UI components, AI chat interface, and a scalable project structure to kickstart your next project.
 
 ## 🚀 Tech Stack
 
@@ -10,6 +12,7 @@ A modern, production-ready starter template for building full-stack applications
 - **Authentication & Database:** [Supabase](https://supabase.com/) 2.84.0
   - [@supabase/supabase-js](https://supabase.com/docs/reference/javascript) 2.84.0
   - [@supabase/ssr](https://supabase.com/docs/guides/auth/server-side/creating-a-client) 0.7.0
+- **AI:** [Vercel AI SDK](https://ai-sdk.dev/) with OpenAI integration
 - **State Management:** [Zustand](https://zustand.docs.pmnd.rs/) 5.0.8
 - **Validation:** [Zod](https://zod.dev/) 4.1.13
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/) 3.4.18
@@ -37,6 +40,15 @@ A modern, production-ready starter template for building full-stack applications
 - ✅ Tailwind CSS for styling
 - ✅ Professional form components
 - ✅ Loading states and error handling
+
+### AI Features
+
+- ✅ Vercel AI SDK integration
+- ✅ Streaming AI responses
+- ✅ Chat interface with OpenAI GPT-4o-mini
+- ✅ Real-time message streaming
+- ✅ Type-safe AI responses with Zod
+- ✅ Ready for custom AI features
 
 ### Developer Experience
 
@@ -113,11 +125,17 @@ pnpm install
 Create a `.env.local` file in the root directory:
 
 ```env
+# Supabase
 NEXT_PUBLIC_SUPABASE_URL=your-project-url
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-anon-key
+
+# OpenAI (for AI features)
+OPENAI_API_KEY=your-openai-api-key
 ```
 
-> **Note:** You can find these values in your Supabase project's [API settings](https://supabase.com/dashboard/project/_/settings/api)
+> **Note:**  
+> - Find Supabase values in your [API settings](https://supabase.com/dashboard/project/_/settings/api)  
+> - Get OpenAI API key from [OpenAI Platform](https://platform.openai.com/api-keys)
 
 ### 5. Run the development server
 
@@ -126,6 +144,8 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+Visit [http://localhost:3000/ai-demo](http://localhost:3000/ai-demo) to try the AI chat interface.
 
 ## 🛠️ Available Scripts
 
@@ -146,37 +166,77 @@ pnpm dlx shadcn@latest add [component-name]
 
 To customize the theme, modify the `tailwind.config.ts` and `app/globals.css` files.
 
-## 🧪 Testing (Optional)
+## 🤖 AI Features
 
-This template has a separate branch with full testing support:
+This branch includes [Vercel AI SDK](https://ai-sdk.dev/) integration with the following features:
 
-**Branch: `with-testing`**
+### What's Included
 
-Includes:
+- ✅ **Chat API Route**: `/app/api/chat/route.ts` - Streaming AI chat endpoint
+- ✅ **AI Chat Component**: Reusable chat interface with shadcn/ui
+- ✅ **Demo Page**: `/ai-demo` - Try the AI chat interface
+- ✅ **Cursor Rule**: AI SDK best practices in `.cursor/rules/ai-sdk.mdc`
+- ✅ **Type-Safe**: Full TypeScript support with AI SDK types
 
+### Quick Start
+
+1. Add your OpenAI API key to `.env.local`:
+```env
+OPENAI_API_KEY=sk-...
+```
+
+2. Visit `/ai-demo` to try the chat interface
+
+3. Use the chat component in your app:
+```typescript
+import { AIChat } from '@/components/ai-chat';
+
+export default function MyPage() {
+  return <AIChat />;
+}
+```
+
+### Customization
+
+- Change AI model in `/app/api/chat/route.ts`
+- Customize chat UI in `/components/ai-chat.tsx`
+- Add tools/functions for advanced features
+- Integrate with Supabase for conversation history
+
+### Resources
+
+- [AI SDK Docs](https://ai-sdk.dev/)
+- [Provider Registry](https://ai-sdk.dev/providers)
+- [Examples](https://ai-sdk.dev/examples)
+
+## 🧪 Other Branches
+
+### `with-testing` - Full Testing Support
 - **Playwright** for E2E testing
 - **Vitest** for unit testing
 - **React Testing Library** for component testing
-- Pre-configured test setup
-- Example tests for auth flows
-- GitHub Actions workflow for CI/CD
-
-To use the testing setup:
 
 ```bash
 git checkout with-testing
-pnpm install
-pnpm test           # Run unit tests
-pnpm test:e2e       # Run E2E tests
 ```
 
-> **Note:** The main branch is kept lightweight for quick prototyping. Switch to `with-testing` when you're ready to add comprehensive test coverage.
+### `with-canvas` - React Flow Integration
+- **React Flow** for node-based UIs
+- Interactive diagrams and flowcharts
+- Visual workflow builders
+
+```bash
+git checkout with-canvas
+```
+
+> **Note:** The main branch is kept lightweight. Switch to feature branches when you need specific capabilities.
 
 ## 📐 Cursor Rules
 
-This template includes **18 comprehensive Cursor Rules** covering:
+This template includes **19 comprehensive Cursor Rules** covering:
 
 - **Core Stack:** Next.js, React, TypeScript, Tailwind CSS, Zod, Zustand
+- **AI:** AI SDK (Vercel AI SDK best practices) ✨
 - **Backend & Auth:** Database, Authentication, Server Actions
 - **Development:** Testing, Clean Code, Code Quality, File Naming
 - **Production:** Security, Performance, Error Handling, Accessibility

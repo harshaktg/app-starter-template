@@ -1,0 +1,289 @@
+---
+description: Vercel AI SDK best practices for building AI-powered applications
+globs: app/api/**/route.ts, **/*.tsx, **/*.ts
+---
+
+# Vercel AI SDK Best Practices
+
+## Installation & Setup
+
+- Install AI SDK: `pnpm add ai`
+- Install provider: `pnpm add @ai-sdk/openai` (or other providers)
+- Store API keys in `.env.local`
+- Never commit API keys to version control
+- Use environment variables: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, etc.
+- Set `maxDuration` in route handlers for streaming responses
+
+## Route Handlers
+
+- Create API routes in `app/api/` directory
+- Use `POST` method for AI requests
+- Set proper `maxDuration` for streaming (default: 30s)
+- Use `streamText()` for text generation
+- Use `generateText()` for non-streaming responses
+- Use `generateObject()` for structured outputs
+- Return `result.toDataStreamResponse()` for streaming
+
+## Client-Side Hooks
+
+### useChat()
+- Use for chat interfaces
+- Provides `messages`, `input`, `handleSubmit`, `isLoading`
+- Automatically manages message history
+- Handles streaming responses
+- Pass `api` prop to customize endpoint
+
+### useCompletion()
+- Use for text completion interfaces
+- Provides `completion`, `input`, `handleSubmit`, `isLoading`
+- Streams text token by token
+- Good for writing assistants, autocomplete
+
+### useObject()
+- Use for generating structured data
+- Validates against Zod schemas
+- Returns typed objects
+- Good for forms, data extraction
+
+## AI Providers
+
+### OpenAI
+- Use `@ai-sdk/openai`
+- Models: `gpt-4o`, `gpt-4o-mini`, `gpt-3.5-turbo`
+- Best for general-purpose tasks
+- Good streaming performance
+
+### Anthropic
+- Use `@ai-sdk/anthropic`
+- Models: `claude-3-5-sonnet`, `claude-3-opus`, `claude-3-haiku`
+- Excellent for reasoning and analysis
+- Strong context handling
+
+### Google
+- Use `@ai-sdk/google`
+- Models: `gemini-pro`, `gemini-pro-vision`
+- Good for multimodal tasks
+
+### Custom Providers
+- Use `@ai-sdk/provider` for custom implementations
+- Support for local models (Ollama, LM Studio)
+- Can wrap any OpenAI-compatible API
+
+## Streaming
+
+- Always use streaming for better UX
+- Set `maxDuration` in route config
+- Use `streamText()` for text responses
+- Handle loading states in UI
+- Show typing indicators
+- Implement proper error boundaries
+
+## Structured Outputs
+
+- Use `generateObject()` with Zod schemas
+- Validate responses automatically
+- Type-safe outputs
+- Good for forms, data extraction, function calling
+
+### Example with Zod
+```typescript
+import { z } from 'zod';
+import { generateObject } from 'ai';
+
+const schema = z.object({
+  name: z.string(),
+  age: z.number(),
+  email: z.string().email(),
+});
+
+const { object } = await generateObject({
+  model: openai('gpt-4o-mini'),
+  schema,
+  prompt: 'Generate user data',
+});
+```
+
+## Tool Calling (Function Calling)
+
+- Define tools with Zod schemas
+- Execute functions based on AI responses
+- Return results back to AI
+- Implement multi-turn conversations
+- Handle tool errors gracefully
+
+### Tool Definition
+```typescript
+const weatherTool = {
+  description: 'Get weather for a location',
+  parameters: z.object({
+    location: z.string(),
+  }),
+  execute: async ({ location }) => {
+    return `Weather in ${location}: Sunny`;
+  },
+};
+```
+
+## Error Handling
+
+- Wrap AI calls in try-catch blocks
+- Handle rate limits gracefully
+- Show user-friendly error messages
+- Implement retry logic for transient failures
+- Log errors for monitoring
+- Handle timeouts appropriately
+- Validate API keys on startup
+
+## Security
+
+- Never expose API keys in client code
+- Use route handlers for AI calls
+- Validate user input before sending to AI
+- Implement rate limiting
+- Add authentication checks
+- Sanitize AI responses before displaying
+- Monitor API usage and costs
+- Implement usage quotas per user
+
+## Performance
+
+- Use smaller models when possible (e.g., gpt-4o-mini)
+- Implement caching for repeated queries
+- Stream responses for better perceived performance
+- Use `maxTokens` to limit response length
+- Implement request deduplication
+- Monitor response times
+- Use edge runtime when possible
+
+## Prompt Engineering
+
+- Write clear, specific prompts
+- Provide examples in prompts
+- Use system messages for context
+- Structure prompts consistently
+- Test prompts thoroughly
+- Version control prompts
+- Use prompt templates
+- Implement prompt testing
+
+## State Management
+
+- Use Zustand for complex AI state
+- Store conversation history appropriately
+- Manage loading states properly
+- Handle message streaming state
+- Clear state when needed
+- Persist conversations to database (Supabase)
+- Implement optimistic updates
+
+## Testing
+
+- Mock AI responses in tests
+- Test error scenarios
+- Test streaming behavior
+- Test tool calling
+- Validate response schemas
+- Test rate limiting
+- Test timeout handling
+
+## UI/UX Best Practices
+
+- Show loading indicators
+- Display streaming text token by token
+- Implement message bubbles for chat
+- Add typing indicators
+- Show error states clearly
+- Allow message regeneration
+- Implement copy/share functionality
+- Add syntax highlighting for code
+
+## Cost Optimization
+
+- Use smaller models when appropriate
+- Implement caching
+- Set reasonable `maxTokens`
+- Monitor usage with analytics
+- Implement user quotas
+- Use prompt compression
+- Cache embeddings
+- Batch similar requests
+
+## Multimodal
+
+- Use vision models for image analysis
+- Support file uploads
+- Handle different content types
+- Validate file types and sizes
+- Process images efficiently
+- Provide image previews
+
+## Rate Limiting
+
+- Implement client-side throttling
+- Use server-side rate limiting
+- Handle 429 responses gracefully
+- Show retry-after information
+- Queue requests when needed
+- Implement exponential backoff
+
+## Deployment
+
+- Set environment variables in production
+- Use edge runtime for lower latency
+- Configure proper `maxDuration`
+- Monitor API costs
+- Set up error tracking
+- Implement usage analytics
+- Use CDN for static AI responses
+
+## Integration with Supabase
+
+- Store conversations in Supabase database
+- Use RLS for user-specific chats
+- Implement real-time chat features
+- Store AI-generated content
+- Track usage per user
+- Implement conversation search
+- Archive old conversations
+
+## Best Practices
+
+- Start with streaming for better UX
+- Use TypeScript for type safety
+- Implement proper error boundaries
+- Test with different models
+- Monitor costs and usage
+- Implement user feedback
+- Version your prompts
+- Document AI features
+- Handle edge cases gracefully
+- Keep prompts in separate files
+- Use consistent message formats
+- Implement proper logging
+
+## Common Patterns
+
+### Chat Interface
+```typescript
+const { messages, input, handleInputChange, handleSubmit } = useChat();
+```
+
+### Text Completion
+```typescript
+const { completion, input, handleInputChange, handleSubmit } = useCompletion();
+```
+
+### Structured Data Generation
+```typescript
+const { object, isLoading } = useObject({
+  api: '/api/generate',
+  schema: mySchema,
+});
+```
+
+## Resources
+
+- [AI SDK Documentation](https://ai-sdk.dev/)
+- [Provider Registry](https://ai-sdk.dev/providers)
+- [Examples](https://ai-sdk.dev/examples)
+- [API Reference](https://ai-sdk.dev/docs)

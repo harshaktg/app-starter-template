@@ -155,6 +155,7 @@ This template has specialized branches with additional features. Choose the one 
 Add AI capabilities with Vercel AI SDK and OpenAI integration.
 
 **Includes:**
+
 - ✅ Streaming AI chat interface
 - ✅ OpenAI GPT-4o-mini integration
 - ✅ Reusable AI components
@@ -178,6 +179,7 @@ pnpm dev
 Build node-based editors and interactive diagrams with React Flow.
 
 **Includes:**
+
 - ✅ Interactive flow canvas
 - ✅ Drag-and-drop nodes
 - ✅ Visual connections
@@ -200,6 +202,7 @@ pnpm dev
 Comprehensive testing setup for production applications.
 
 **Includes:**
+
 - ✅ **Playwright** for E2E testing
 - ✅ **Vitest** for unit testing
 - ✅ **React Testing Library** for component testing

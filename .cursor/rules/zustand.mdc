@@ -1,0 +1,256 @@
+---
+description: Zustand state management patterns for Next.js applications
+globs: **/*.ts, **/*.tsx, lib/store/**/*, stores/**/*
+---
+
+# Zustand State Management Best Practices
+
+## Store Structure
+
+- Create separate stores for different domains (auth, UI, data)
+- Keep stores focused and single-purpose
+- Co-locate store with related components when appropriate
+- Use a `stores/` or `lib/store/` directory for shared stores
+- Export both the hook and the store instance
+- Use TypeScript for type-safe stores
+- Document store purpose and usage
+
+## Store Definition
+
+- Use `create` from zustand
+- Define proper TypeScript interfaces for state and actions
+- Keep state flat when possible
+- Group related state together
+- Separate state and actions clearly
+- Use descriptive action names
+- Implement proper action signatures
+- Return new objects/arrays for immutability
+
+## TypeScript Patterns
+
+- Define state interface before creating store
+- Use proper typing for actions
+- Leverage TypeScript inference
+- Use generics when appropriate
+- Type selector functions properly
+- Use `StoreApi` type for advanced patterns
+- Avoid `any` types in stores
+- Export store types for reuse
+
+## Client Components Only
+
+- Zustand only works in Client Components
+- Mark components using Zustand with 'use client'
+- Don't use Zustand in Server Components
+- Initialize stores in client components
+- Pass initial data from server to client when needed
+- Consider using React Context for server-rendered state
+- Hydrate stores carefully with server data
+
+## State Updates
+
+- Use set() to update state
+- Keep updates simple and focused
+- Avoid nested updates when possible
+- Use immer middleware for complex nested updates
+- Batch related updates together
+- Use functional updates when depending on previous state
+- Don't mutate state directly
+- Return new state objects
+
+## Selectors
+
+- Use selectors to prevent unnecessary re-renders
+- Keep selectors simple and focused
+- Use shallow equality for object/array selectors
+- Create reusable selector functions
+- Use `useShallow` hook for automatic shallow comparison
+- Avoid selecting entire store unless necessary
+- Memoize complex selectors
+- Test selector performance
+
+## Derived State
+
+- Compute derived state in selectors
+- Don't store computed values in state
+- Use selector functions for transformations
+- Memoize expensive computations
+- Keep derived logic in selectors, not components
+- Consider using separate selectors for different views
+- Test derived state logic
+
+## Actions
+
+- Define actions inside the store
+- Keep actions focused and single-purpose
+- Use descriptive action names (e.g., `addTodo`, `setUser`)
+- Handle async operations in actions
+- Implement error handling in actions
+- Return meaningful values from actions when needed
+- Don't expose `set` directly outside the store
+- Log actions in development when needed
+
+## Async Operations
+
+- Handle async logic in actions
+- Set loading states before async operations
+- Handle errors appropriately
+- Update state after successful operations
+- Clear loading states in finally blocks
+- Implement proper error messages
+- Use try-catch blocks
+- Consider using middleware for async patterns
+
+## Middleware
+
+- Use `persist` middleware for localStorage persistence
+- Use `devtools` middleware in development
+- Use `immer` middleware for complex state updates
+- Chain middleware properly
+- Configure middleware options appropriately
+- Use `subscribeWithSelector` for selective subscriptions
+- Implement custom middleware when needed
+- Test middleware behavior
+
+## Persistence
+
+- Use persist middleware for client-side persistence
+- Configure storage (localStorage, sessionStorage)
+- Serialize/deserialize properly
+- Handle migration for schema changes
+- Version your persisted state
+- Clear persisted state when needed
+- Handle hydration carefully
+- Don't persist sensitive data
+
+## Performance
+
+- Use selectors to minimize re-renders
+- Split large stores into smaller ones
+- Use shallow equality checking
+- Avoid selecting unnecessary state
+- Memoize expensive computations
+- Profile and optimize hot paths
+- Use devtools to monitor performance
+- Test with React DevTools Profiler
+
+## Integration with Supabase
+
+- Don't store sensitive Supabase data in Zustand
+- Use Zustand for UI state, not auth state
+- Sync Supabase data to Zustand when needed
+- Handle real-time updates in store actions
+- Clear store on logout
+- Use Supabase as source of truth
+- Cache Supabase data appropriately
+- Handle offline scenarios
+
+## Testing Stores
+
+- Test stores in isolation
+- Test actions and state updates
+- Test async operations
+- Test error handling
+- Mock external dependencies
+- Test persistence behavior
+- Test selectors
+- Use act() for async updates in tests
+
+## Common Patterns
+
+### UI State Store
+```typescript
+interface UIState {
+  isModalOpen: boolean
+  modalContent: string | null
+  openModal: (content: string) => void
+  closeModal: () => void
+}
+```
+
+### Data Cache Store
+```typescript
+interface DataState<T> {
+  data: T | null
+  loading: boolean
+  error: string | null
+  fetchData: () => Promise<void>
+  clearData: () => void
+}
+```
+
+### Form State Store
+```typescript
+interface FormState {
+  values: Record<string, any>
+  errors: Record<string, string>
+  setValue: (key: string, value: any) => void
+  setError: (key: string, error: string) => void
+  reset: () => void
+}
+```
+
+## Store Organization
+
+- Group related state and actions together
+- Separate concerns into different stores
+- Create a root store if needed for combining stores
+- Use store composition for complex scenarios
+- Keep stores independent when possible
+- Share state through props when appropriate
+- Document store dependencies
+
+## DevTools Integration
+
+- Enable Redux DevTools in development
+- Use meaningful action names for debugging
+- Inspect state changes in DevTools
+- Time-travel debug when needed
+- Monitor performance in DevTools
+- Use DevTools for testing state changes
+- Disable in production for performance
+
+## Hydration
+
+- Handle Next.js hydration carefully
+- Use useEffect for initial hydration
+- Don't access store during SSR
+- Initialize stores on client mount
+- Handle hydration mismatches
+- Use suspense boundaries if needed
+- Test hydration scenarios
+
+## Security
+
+- Don't store sensitive data in Zustand
+- Clear sensitive state on logout
+- Don't persist authentication tokens
+- Validate data before storing
+- Sanitize user input
+- Use Supabase for sensitive operations
+- Clear state on auth changes
+
+## Migration
+
+- Version your store schema
+- Implement migration functions for persist
+- Handle missing persisted data gracefully
+- Clear incompatible persisted state
+- Document schema changes
+- Test migrations thoroughly
+- Provide fallbacks for old data
+
+## Best Practices
+
+- Keep stores simple and focused
+- Use TypeScript for type safety
+- Test store logic thoroughly
+- Document complex stores
+- Use middleware appropriately
+- Profile performance regularly
+- Follow naming conventions
+- Handle errors gracefully
+- Clear state when appropriate
+- Use selectors to prevent re-renders
+- Keep stores client-side only
+- Use Supabase for persistence, Zustand for UI state

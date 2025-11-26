@@ -10,6 +10,8 @@ A modern, production-ready starter template for building full-stack applications
 - **Authentication & Database:** [Supabase](https://supabase.com/) 2.84.0
   - [@supabase/supabase-js](https://supabase.com/docs/reference/javascript) 2.84.0
   - [@supabase/ssr](https://supabase.com/docs/guides/auth/server-side/creating-a-client) 0.7.0
+- **State Management:** [Zustand](https://zustand.docs.pmnd.rs/) 5.0.8
+- **Validation:** [Zod](https://zod.dev/) 4.1.13
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/) 3.4.18
 - **UI Components:** [shadcn/ui](https://ui.shadcn.com/) + [Radix UI](https://www.radix-ui.com/)
 - **Theme:** Dark/Light mode with [next-themes](https://github.com/pacocoursey/next-themes) 0.4.6
@@ -39,6 +41,8 @@ A modern, production-ready starter template for building full-stack applications
 ### Developer Experience
 
 - ✅ TypeScript for type safety
+- ✅ Zod for schema validation
+- ✅ Zustand for state management
 - ✅ ESLint configuration
 - ✅ Organized project structure
 - ✅ Supabase client configurations (Server, Client, Proxy)
